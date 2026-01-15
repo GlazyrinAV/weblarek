@@ -23,6 +23,21 @@ export interface IBuyer {
     address: string | null;
 }
 
+export interface IProductList {
+    total: number;
+    items: IProduct[];
+}
+
+export interface IOrder extends IBuyer {
+    total: number,
+    items: String[];
+}
+
+export interface IOrderSuccess {
+    id: string,
+    total: number
+}
+
 export interface IValidationResult {
     [key: string]: string;
 }

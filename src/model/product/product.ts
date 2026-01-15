@@ -20,13 +20,19 @@ export class Product {
         return Array.from(this._products);
     }
 
-    public findById(id: string): IProduct | null {
+    public findById(id: string): IProduct {
         let product = Array.from(this._products).find(item => item.id === id);
-        return product ? product : null;
+
+        if (product) {
+            return product;
+        } else {
+            throw new Error(`Товар с Id: ${id} не найден.`)
+        }
     }
 
     public saveCurrentProduct(id: string): IProduct {
         let product: IProduct | null = this.findById(id);
+
         if (product) {
             this._currentProduct = product;
             return this._currentProduct;
@@ -35,7 +41,11 @@ export class Product {
         }
     }
 
-    public findCurrentProduct(): IProduct | null {
-        return this._currentProduct;
+    public findCurrentProduct(): IProduct {
+        if (this._currentProduct) {
+            return this._currentProduct;
+        } else {
+            throw new Error("Текущий товар не выбран");
+        }
     }
 }
