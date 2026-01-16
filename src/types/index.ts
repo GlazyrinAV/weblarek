@@ -33,7 +33,7 @@ export interface IOrder extends IBuyer {
     items: String[];
 }
 
-export interface IOrderSuccess {
+export interface IOrderResult {
     id: string,
     total: number
 }

@@ -1,11 +1,11 @@
 import './scss/styles.scss';
-import {ApiController} from "./controller/APIController/apiController.ts";
+import {ApiController} from "./components/controller/APIController/apiController.ts";
 import {Api} from "./components/base/Api.ts";
 import {API_URL} from "./utils/constants.ts";
-import {Product} from "./model/product/product.ts";
-import {Buyer} from "./model/buyer/buyer.ts";
-import {Cart} from "./model/cart/cart.ts";
-import {IBuyer} from "./types";
+import {Product} from "./components/model/product/product.ts";
+import {Buyer} from "./components/model/buyer/buyer.ts";
+import {Cart} from "./components/model/cart/cart.ts";
+import {IBuyer, IOrder} from "./types";
 
 let product = new Product();
 let buyer = new Buyer();
@@ -15,25 +15,34 @@ let api = new ApiController(new Api(API_URL));
 //Получение от сервера списка товаров
 await api.findAll().then(data => {
     console.log(data);
-    product.saveAll(data);
+    product.setAll(data);
 });
 
 // Проверка товаров
-console.log(product.findAll());
-console.log(product.findById("1c521d84-c48d-48fa-8cfb-9d911fa515fd"));
-console.log(product.saveCurrentProduct("6a834fb8-350a-440c-ab55-d0e9b959b6e3"));
-console.log(product.findCurrentProduct());
+console.log(product.getAll());
+console.log(product.getById("1c521d84-c48d-48fa-8cfb-9d911fa515fd"));
+let p = product.getById("1c521d84-c48d-48fa-8cfb-9d911fa515fd");
+if (p) {
+    product.setCurrentProduct(p);
+}
+console.log(product.getCurrentProduct());
 
 // Проверка корзины
-console.log(cart.save(product.findCurrentProduct()));
+let c = product.getCurrentProduct();
+if (c) {
+    cart.set(c);
+}
 console.log(cart.isProductInCart("1c521d84-c48d-48fa-8cfb-9d911fa515fd"));
-console.log(cart.findTotalCount());
-console.log(cart.findTotalPrice());
-console.log(cart.save(product.findById("1c521d84-c48d-48fa-8cfb-9d911fa515fd")));
+console.log(cart.getTotalCount());
+console.log(cart.getTotalPrice());
+let b = product.getById("1c521d84-c48d-48fa-8cfb-9d911fa515fd");
+if (b) {
+    cart.set(b);
+}
 cart.remove("1c521d84-c48d-48fa-8cfb-9d911fa515fd");
-console.log(cart.findAll());
+console.log(cart.getAll());
 cart.clear();
-console.log(cart.findAll());
+console.log(cart.getAll());
 
 let newBuyer: IBuyer = {
     payment: "CASH",
@@ -50,13 +59,13 @@ let updateBuyer: IBuyer = {
 };
 
 // Проверка заказа
-console.log(buyer.save(newBuyer));
+buyer.set(newBuyer);
 console.log(buyer.validate());
-console.log(buyer.save(updateBuyer));
+buyer.set(updateBuyer);
 console.log(buyer.validate());
-console.log(buyer.findAll());
+console.log(buyer.getAll());
 buyer.clear();
-console.log(buyer.findAll());
+console.log(buyer.getAll());
 
 // Проверка отправки заказа на сервер
 let finalBuyer: IBuyer = {
@@ -66,9 +75,20 @@ let finalBuyer: IBuyer = {
     address: "Moscow, Kremlin",
 };
 
-buyer.save(finalBuyer);
-cart.save(product.findById("1c521d84-c48d-48fa-8cfb-9d911fa515fd"));
-cart.save(product.findById("6a834fb8-350a-440c-ab55-d0e9b959b6e3"));
+if (b) {
+    cart.set(b);
+}
+if (c) {
+    cart.set(c);
+}
 
-let order = await api.save(finalBuyer, cart.findAll());
+let newOrder: IOrder = {
+    ...finalBuyer,
+    total: cart.getTotalPrice(),
+    items: cart.getAll().map(item => {
+        return item.id;
+    })
+}
+
+let order = await api.save(newOrder);
 console.log(order);
