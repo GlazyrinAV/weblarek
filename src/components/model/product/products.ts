@@ -1,6 +1,6 @@
 import {IProduct} from "../../../types";
 
-export class Product {
+export class Products {
 
     private products: IProduct[] = [];
 
@@ -15,9 +15,7 @@ export class Product {
     }
 
     public getById(id: string): IProduct | null {
-        let product = Array.from(this.products).find(item => item.id === id);
-
-        return product ? product : null;
+        return Array.from(this.products).find(item => item.id === id) ?? null;
     }
 
     public setCurrentProduct(product: IProduct): void {
