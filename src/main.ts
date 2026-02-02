@@ -1,5 +1,5 @@
 import './scss/styles.scss';
-import {ApiController} from "./components/controller/APIController/apiController.ts";
+import {ApiController} from "./components/controller/apiController/apiController.ts";
 import {Api} from "./components/base/Api.ts";
 import {API_URL} from "./utils/constants.ts";
 import {Buyer} from "./components/model/buyer/buyer.ts";
