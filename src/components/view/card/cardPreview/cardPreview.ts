@@ -16,7 +16,7 @@ export class CardPreview extends Card<ICardPreviewData> {
     protected descriptionElement: HTMLElement;
     protected cartButton: HTMLButtonElement;
 
-    constructor(events: IEvents, container: HTMLElement) {
+    constructor(protected events: IEvents, container: HTMLElement) {
         super(container);
 
         this.categoryElement = ensureElement<HTMLElement>('card__price', this.container);
