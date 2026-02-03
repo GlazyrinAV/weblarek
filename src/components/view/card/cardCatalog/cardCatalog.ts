@@ -5,6 +5,7 @@ interface ICardCatalogData {
     category: string;
     title: string;
     image: string;
+    alt: string | null
     price: number | null;
 }
 
@@ -22,7 +23,7 @@ export class CardCatalog extends Card<ICardCatalogData> {
         this.categoryElement.textContent = category;
     }
 
-    public set image(src: string) {
-        this.imageElement.src = `.${src}`;
+    public createImage(src: string, alt?: string) {
+        this.setImage(this.imageElement, src, alt);
     }
 }

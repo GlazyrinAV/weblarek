@@ -7,6 +7,7 @@ interface ICardPreviewData {
     title: string;
     description: string;
     image: string;
+    alt: string | null;
     price: number | null;
 }
 
@@ -33,8 +34,8 @@ export class CardPreview extends Card<ICardPreviewData> {
         this.categoryElement.textContent = category;
     }
 
-    public set image(src: string) {
-        this.imageElement.src = `.${src}`;
+    public createImage(src: string, alt?: string) {
+        this.setImage(this.imageElement, src, alt);
     }
 
     public set description(text: string) {

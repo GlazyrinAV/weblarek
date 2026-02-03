@@ -14,7 +14,7 @@ export class Gallery extends Component<IGalleryData> {
         this.catalogElement = ensureElement<HTMLElement>('gallery', container);
     }
 
-    public catalog(items: HTMLElement[]) {
+    public set catalog(items: HTMLElement[]) {
         let list: HTMLUListElement = document.createElement('ul');
         items.forEach(item => {
             let listItem = document.createElement('li');
