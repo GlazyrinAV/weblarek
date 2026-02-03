@@ -6,7 +6,7 @@ export abstract class Card<T> extends Component<T> {
     protected priceElement: HTMLElement;
 
     protected constructor(container: HTMLElement) {
-        super(container)
+        super(container);
         this.titleElement = ensureElement<HTMLElement>('card__title', this.container);
         this.priceElement = ensureElement<HTMLElement>('card__price', this.container);
     }

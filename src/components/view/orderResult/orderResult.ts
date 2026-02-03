@@ -18,7 +18,7 @@ export class OrderResult extends Component<IOrderResult> {
 
         this.closeButton.addEventListener('click', () => {
             events.emit('result:close');
-        })
+        });
     }
 
     public set description(total: number) {

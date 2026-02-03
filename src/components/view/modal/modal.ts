@@ -17,8 +17,8 @@ export class Modal extends Component<IModalData> {
         this.contentElement = ensureElement<HTMLElement>('modal__content', this.container);
 
         this.closeButton.addEventListener('click', () => {
-            this.events.emit('modal:close')
-        })
+            this.events.emit('modal:close');
+        });
     }
 
     public set content(content: HTMLElement) {

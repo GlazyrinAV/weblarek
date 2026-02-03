@@ -26,7 +26,7 @@ export class CardPreview extends Card<ICardPreviewData> {
 
         this.cartButton.addEventListener('click', () => {
             events.emit('card:addToCart');
-        })
+        });
     }
 
     public set category(category: string) {

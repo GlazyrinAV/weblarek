@@ -21,6 +21,6 @@ export class Gallery extends Component<IGalleryData> {
             listItem.classList.add('gallery__item')
             listItem.append(item);
             list.append(listItem);
-        })
+        });
     }
 }
