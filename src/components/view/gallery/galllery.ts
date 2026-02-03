@@ -8,7 +8,7 @@ interface IGalleryData {
 export class Gallery extends Component<IGalleryData> {
     protected catalogElement: HTMLElement;
 
-    constructor(container: HTMLElement) {
+    protected constructor(container: HTMLElement) {
         super(container);
 
         this.catalogElement = ensureElement<HTMLElement>('gallery', container);

@@ -10,7 +10,7 @@ export class OrderResult extends Component<IOrderResult> {
     protected descriptionElement: HTMLElement;
     protected closeButton: HTMLButtonElement;
 
-    constructor(protected events: IEvents, container: HTMLElement) {
+    protected constructor(protected events: IEvents, container: HTMLElement) {
         super(container);
 
         this.descriptionElement = ensureElement<HTMLElement>('order-success__description', this.container);
