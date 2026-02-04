@@ -31,7 +31,7 @@ export class Order extends OrderForm<IOrderData> {
         });
 
         this.orderButton.addEventListener('click', () => {
-            this.events.emit('order:order')
+            this.events.emit('order:continue')
         });
 
         this.addressElement.addEventListener('input', () => {

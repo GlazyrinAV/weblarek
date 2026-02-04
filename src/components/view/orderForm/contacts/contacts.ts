@@ -20,15 +20,15 @@ export class Contacts extends OrderForm<IContactsData> {
         this.sendOrderElement = ensureElement<HTMLButtonElement>('button', this.container);
 
         this.emailElement.addEventListener('input', () => {
-            this.events.emit('contacts:email');
+            this.events.emit('order:email');
         });
 
         this.phoneElement.addEventListener('input', () => {
-            this.events.emit('contacts:phone');
+            this.events.emit('order:phone');
         });
 
         this.sendOrderElement.addEventListener('click', () => {
-            this.events.emit('contacts:send');
+            this.events.emit('order:send');
         });
     }
 }
