@@ -1,4 +1,5 @@
 import {IBuyer, IValidationResult} from "../../../types";
+import {IEvents} from "../../base/Events.ts";
 
 export class Buyer {
 
@@ -7,6 +8,9 @@ export class Buyer {
         email: "",
         payment: null,
         phone: ""
+    }
+
+    constructor(protected events: IEvents) {
     }
 
     set(buyer: Partial<IBuyer>): void {
@@ -22,6 +26,7 @@ export class Buyer {
         if (buyer.phone && buyer.phone.trim().length > 0) {
             this.buyer.phone = buyer.phone;
         }
+        this.events.emit('buyer:set');
     }
 
     getAll(): IBuyer {

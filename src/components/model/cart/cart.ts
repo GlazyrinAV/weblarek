@@ -1,8 +1,12 @@
 import {IProduct} from "../../../types";
+import {IEvents} from "../../base/Events.ts";
 
 export class Cart {
 
     private cart: Set<IProduct> = new Set<IProduct>();
+
+    constructor(protected events: IEvents) {
+    }
 
     public getAll(): IProduct[] {
         return Array.from(this.cart);
@@ -10,17 +14,20 @@ export class Cart {
 
     public set(product: IProduct): void {
         this.cart.add(product);
+        this.events.emit('cart:set');
     }
 
     public remove(id: string): void {
         const target: IProduct | undefined = Array.from(this.cart).find(item => item.id === id);
         if (target) {
             this.cart.delete(target);
+            this.events.emit('cart:remove');
         }
     }
 
     public clear(): void {
         this.cart.clear();
+        this.events.emit('cart:clear');
     }
 
     public getTotalPrice(): number {

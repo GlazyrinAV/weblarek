@@ -1,4 +1,5 @@
 import {IProduct} from "../../../types";
+import {IEvents} from "../../base/Events.ts";
 
 export class Products {
 
@@ -6,8 +7,12 @@ export class Products {
 
     private currentProduct: IProduct | null = null;
 
+    constructor(protected events: IEvents) {
+    }
+
     public setAll(data: IProduct[]): void {
         data.forEach(item => this.products.push(item))
+        this.events.emit('product:setAll');
     }
 
     public getAll(): IProduct[] {
@@ -20,6 +25,7 @@ export class Products {
 
     public setCurrentProduct(product: IProduct): void {
         this.currentProduct = product;
+        this.events.emit('product:setCurrent')
     }
 
     public getCurrentProduct(): IProduct | null {
