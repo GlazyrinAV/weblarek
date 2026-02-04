@@ -4,6 +4,7 @@ import {IEvents} from "../../../base/Events.ts";
 import {categoryMap, CDN_URL} from "../../../../utils/constants.ts";
 
 interface ICardCatalogData {
+    id: string;
     category: string;
     title: string;
     image: string;
@@ -16,14 +17,15 @@ export class CardCatalog extends Card<ICardCatalogData> {
     protected imageElement: HTMLImageElement;
     protected cardButton: HTMLButtonElement;
 
-    protected constructor(protected events: IEvents, container: HTMLElement) {
+    constructor(protected events: IEvents, container: HTMLElement) {
         super(container);
-        this.categoryElement = ensureElement<HTMLElement>('card__price', this.container);
-        this.imageElement = ensureElement<HTMLImageElement>('card__image', this.container);
-        this.cardButton = ensureElement<HTMLButtonElement>('gallery__item', this.container);
+
+        this.categoryElement = ensureElement<HTMLElement>('.card__category', this.container);
+        this.imageElement = ensureElement<HTMLImageElement>('.card__image', this.container);
+        this.cardButton = this.container as HTMLButtonElement;
 
         this.cardButton.addEventListener('click', () => {
-            this.events.emit('card:open')
+            this.events.emit('card:open', this.container.dataset)
         })
     }
 
@@ -36,7 +38,7 @@ export class CardCatalog extends Card<ICardCatalogData> {
         }
     }
 
-    public createImage(src: string, alt?: string):void {
-        this.setImage(this.imageElement, `${CDN_URL}${src}`, alt);
+    public set image(src: string) {
+        this.setImage(this.imageElement, `${CDN_URL}${src}`);
     }
 }

@@ -14,20 +14,20 @@ export class Cart {
 
     public set(product: IProduct): void {
         this.cart.add(product);
-        this.events.emit('cart:set');
+        this.events.emit('cart:change');
     }
 
     public remove(id: string): void {
         const target: IProduct | undefined = Array.from(this.cart).find(item => item.id === id);
         if (target) {
             this.cart.delete(target);
-            this.events.emit('cart:remove');
+            this.events.emit('cart:change');
         }
     }
 
     public clear(): void {
         this.cart.clear();
-        this.events.emit('cart:clear');
+        this.events.emit('cart:change');
     }
 
     public getTotalPrice(): number {

@@ -240,7 +240,8 @@ Presenter - презентер содержит основную логику п
 
 Класс состоит из следующих полей:
 - `closeButton: HTMLButtonElement;` - кнопка закрытия модального окна, при нажатии формирует событие `modal:close`;
-- `contentElement: HTMLElement;` - содержимое модального окна.
+- `modalElement: HTMLElement` - модальное окно;
+- `contentElement: HTMLElement` - содержимое модального окна.;
 
 Методы:
 `set content(content: HTMLElement): void` - устанавливает содержимое модального окна.`
@@ -271,6 +272,7 @@ Presenter - презентер содержит основную логику п
 Методы:
 - `set title(title: string):void` - указание названия карточки;
 - `set price(price: number):void` - указание цены карточки;
+- `set id(id: string):void` - указание ID в датасете карточки.
 
 С его помощью создаются следующие виды карточек:
 
@@ -278,6 +280,7 @@ Presenter - презентер содержит основную логику п
 Отвечает за создание карточки с подробной информацией о ней.
 
 Данные должны соответствовать `ICardPreviewData`:
+- `id: string` - id карточки;
 - `category: string` - категория карточки;
 - `title: string` - название карточки;
 - `description: string` - описание карточки;
@@ -294,13 +297,14 @@ Presenter - презентер содержит основную логику п
 
 Методы:
 - `set category(category: string):void` - указание категории карточки;
-- `createImage(src: string, alt?: string):void` - указание данных об изображении карточки;
+- `set image(src: string):void` - указание данных об изображении карточки.
 - `set description(text: string):void` - указание описание карточки;
 
 ##### Класс CardCatalog
 Отвечает за создание карточки с подробной информацией о ней.
 
 Данные должны соответствовать ICardCatalogData:
+- `id: string` - id карточки;
 - `category: string` - категория карточки;
 - `title: string` - название карточки;
 - `image: string` - путь к изображению;
@@ -314,12 +318,13 @@ Presenter - презентер содержит основную логику п
 
 Методы:
 - `set category(category: string):void` - указание категории карточки;
-- `createImage(src: string, alt?: string):void` - указание данных об изображении карточки.
+- `set image(src: string):void` - указание данных об изображении карточки.
 
 ##### Класс CardBasket
 Отвечает за создание карточки, которая добавлена в корзину
 
 Данные должны соответствовать ICardBasketData:
+- `id: string` - id карточки;
 - `index: number` - порядковый номер карточки в корзине;
 - `title: string` - название карточки;
 - `price: number | null` - цена карточки;

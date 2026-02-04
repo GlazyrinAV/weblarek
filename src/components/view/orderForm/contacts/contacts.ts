@@ -12,12 +12,12 @@ export class Contacts extends OrderForm<IContactsData> {
     protected phoneElement: HTMLInputElement;
     protected sendOrderElement: HTMLButtonElement;
 
-    protected constructor(protected events: IEvents, container: HTMLElement) {
+    constructor(protected events: IEvents, container: HTMLElement) {
         super(container);
 
-        this.emailElement = ensureElement<HTMLInputElement>('email', this.container);
-        this.phoneElement = ensureElement<HTMLInputElement>('phone', this.container);
-        this.sendOrderElement = ensureElement<HTMLButtonElement>('button', this.container);
+        this.emailElement = ensureElement<HTMLInputElement>('.email', this.container);
+        this.phoneElement = ensureElement<HTMLInputElement>('.phone', this.container);
+        this.sendOrderElement = ensureElement<HTMLButtonElement>('.button', this.container);
 
         this.emailElement.addEventListener('input', () => {
             this.events.emit('order:email');

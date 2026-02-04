@@ -14,19 +14,22 @@ export class Buyer {
     }
 
     set(buyer: Partial<IBuyer>): void {
-        if (buyer.address && buyer.address.trim().length > 0) {
+        if (buyer.address) {
             this.buyer.address = buyer.address;
+            this.events.emit('buyer:setAddress');
         }
-        if (buyer.email && buyer.email.trim().length > 0) {
+        if (buyer.email) {
             this.buyer.email = buyer.email;
+            this.events.emit('buyer:setEmail');
         }
         if (buyer.payment) {
             this.buyer.payment = buyer.payment;
+            this.events.emit('buyer:setPayment');
         }
-        if (buyer.phone && buyer.phone.trim().length > 0) {
+        if (buyer.phone) {
             this.buyer.phone = buyer.phone;
+            this.events.emit('buyer:setPhone');
         }
-        this.events.emit('buyer:set');
     }
 
     getAll(): IBuyer {

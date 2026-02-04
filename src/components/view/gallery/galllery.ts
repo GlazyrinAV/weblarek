@@ -8,19 +8,16 @@ interface IGalleryData {
 export class Gallery extends Component<IGalleryData> {
     protected catalogElement: HTMLElement;
 
-    protected constructor(container: HTMLElement) {
+    constructor(container: HTMLElement) {
         super(container);
 
-        this.catalogElement = ensureElement<HTMLElement>('gallery', container);
+        this.catalogElement = ensureElement<HTMLElement>('.gallery', container);
     }
 
     public set catalog(items: HTMLElement[]) {
-        let list: HTMLUListElement = document.createElement('ul');
         items.forEach(item => {
-            let listItem = document.createElement('li');
-            listItem.classList.add('gallery__item')
-            listItem.append(item);
-            list.append(listItem);
+            this.catalogElement.append(item);
         });
+
     }
 }

@@ -4,96 +4,191 @@ import {Api} from "./components/base/Api.ts";
 import {API_URL} from "./utils/constants.ts";
 import {Buyer} from "./components/model/buyer/buyer.ts";
 import {Cart} from "./components/model/cart/cart.ts";
-import {IBuyer, IOrder} from "./types";
 import {Products} from "./components/model/product/products.ts";
+import {EventEmitter} from "./components/base/Events.ts";
+import {Gallery} from "./components/view/gallery/galllery.ts";
+import {CardCatalog} from "./components/view/card/cardCatalog/cardCatalog.ts";
+import {cloneTemplate} from "./utils/utils.ts";
+import {CardPreview} from "./components/view/card/cardPreview/cardPreview.ts";
+import {Modal} from "./components/view/modal/modal.ts";
+import {Header} from "./components/view/header/header.ts";
+import {Basket} from "./components/view/basket/basket.ts";
+import {CardBasket} from "./components/view/card/cardBasket/cardBasket.ts";
+import {Order} from "./components/view/orderForm/order/order.ts";
+import {Contacts} from "./components/view/orderForm/contacts/contacts.ts";
 
-const products = new Products();
-const buyer = new Buyer();
-const cart = new Cart();
+// IEvent
+const eventEmitter = new EventEmitter();
+
+//Model
+const products = new Products(eventEmitter);
+const cart = new Cart(eventEmitter);
+let buyer: Buyer;
+
+// Controller
 const api = new ApiController(new Api(API_URL));
+
+// View
+const header = new Header(eventEmitter, document.body);
+const gallery = new Gallery(document.body);
+const modal = new Modal(eventEmitter, document.body);
+let order: Order;
+let contact: Contacts;
+
+// product:setAll
+eventEmitter.on('product:setAll', () => {
+    let catalog: HTMLElement[] = [];
+
+    products.getAll().forEach(element => {
+        const productContainer = cloneTemplate('#card-catalog');
+        const productElement = new CardCatalog(eventEmitter, productContainer);
+        catalog.push(productElement.render(element));
+    });
+
+    gallery.render({catalog});
+});
+
+// card:open
+eventEmitter.on('card:open', (data: HTMLDataElement) => {
+    const product = products.getById(data.id);
+    if (product) {
+        products.setCurrentProduct(product);
+    }
+});
+
+// product:setCurrent
+eventEmitter.on('product:setCurrent', () => {
+    const product = products.getCurrentProduct();
+    const productContainer = cloneTemplate('#card-preview');
+    const productElement = new CardPreview(eventEmitter, productContainer);
+
+    if (product) {
+        if (!product.price) {
+            productElement.disablePurchaseButton();
+        }
+
+        if (cart.isProductInCart(product.id)) {
+            productElement.changeButtonToRemove();
+        }
+
+        modal.render({content: productElement.render(product)});
+    }
+})
+
+// modal:close
+eventEmitter.on('modal:close', (container: Modal) => {
+    container.closeModal();
+});
+
+// card:action
+eventEmitter.on('card:action', (data) => {
+    const product = products.getCurrentProduct();
+    if (product) {
+        if ((data as HTMLButtonElement).dataset.type === 'add') {
+            cart.set(product);
+        } else {
+            cart.remove(product.id);
+        }
+    }
+});
+
+// basket:open
+eventEmitter.on('basket:open', () => {
+    renderBasket();
+});
+
+// card:remove
+eventEmitter.on('card:remove', (data: HTMLDataElement) => {
+    cart.remove(data.id);
+});
+
+// cart:change
+eventEmitter.on('cart:change', () => {
+    if (modal.content.querySelector('.basket')) {
+        modal.clear();
+        renderBasket();
+    } else {
+        modal.closeModal();
+    }
+
+    header.counter = cart.getTotalCount();
+});
+
+// order:new
+eventEmitter.on('order:new', () => {
+    buyer = new Buyer(eventEmitter);
+    const orderContainer = cloneTemplate('#order');
+    order = new Order(eventEmitter, orderContainer);
+
+    renderOrder(order);
+});
+
+// order:card
+eventEmitter.on('order:card', () => {
+    buyer.set({payment: "CARD"});
+});
+
+// order:cash
+eventEmitter.on('order:cash', () => {
+    buyer.set({payment: "CASH"});
+});
+
+// buyer:setPayment
+eventEmitter.on('buyer:setPayment', () => {
+    if (order) {
+        renderOrder(order);
+    }
+});
+
+// order:address
+eventEmitter.on('order:address', (data: HTMLInputElement) => {
+    buyer.set({address: data.value});
+});
+
+// buyer:setAddress
+eventEmitter.on('buyer:setAddress', () => {
+    if (order) {
+        renderOrder(order);
+    }
+});
 
 //Получение от сервера списка товаров
 await api.findAll().then(data => {
-    console.log(data);
     products.setAll(data);
 })
     .catch(error => console.log(error));
 
-// Проверка товаров
-console.log(products.getAll());
-console.log(products.getById("1c521d84-c48d-48fa-8cfb-9d911fa515fd"));
-const newProduct1 = products.getById("1c521d84-c48d-48fa-8cfb-9d911fa515fd");
-if (newProduct1) {
-    products.setCurrentProduct(newProduct1);
-}
-console.log(products.getCurrentProduct());
+// отрисовка модального окна с корзиной товаров при изменении её состава
 
-// Проверка корзины
-const newProduct2 = products.getCurrentProduct();
-if (newProduct2) {
-    cart.set(newProduct2);
-}
-console.log(cart.isProductInCart("1c521d84-c48d-48fa-8cfb-9d911fa515fd"));
-console.log(cart.getTotalCount());
-console.log(cart.getTotalPrice());
-const newProduct3 = products.getById("1c521d84-c48d-48fa-8cfb-9d911fa515fd");
-if (newProduct3) {
-    cart.set(newProduct3);
-}
-cart.remove("1c521d84-c48d-48fa-8cfb-9d911fa515fd");
-console.log(cart.getAll());
-cart.clear();
-console.log(cart.getAll());
+function renderBasket(): void {
+    const basketContainer = cloneTemplate("#basket");
+    const basket = new Basket(eventEmitter, basketContainer);
+    let basketCatalog: HTMLElement[] = [];
 
-const newBuyer: IBuyer = {
-    payment: "CASH",
-    email: "",
-    phone: null,
-    address: "Moscow, Kremlin",
-};
+    const cartProducts = cart.getAll();
 
-const updateBuyer: IBuyer = {
-    payment: "CASH",
-    email: "A@A.com",
-    phone: "",
-    address: "Moscow, Kremlin",
-};
+    for (let i = 0; i < cartProducts.length; i++) {
+        const productContainer = cloneTemplate('#card-basket');
+        const productElement = new CardBasket(eventEmitter, productContainer);
+        productElement.index = i + 1;
+        basketCatalog.push(productElement.render(cartProducts[i]));
+    }
 
-// Проверка заказа
-buyer.set(newBuyer);
-console.log(buyer.validate());
-buyer.set(updateBuyer);
-console.log(buyer.validate());
-console.log(buyer.getAll());
-buyer.clear();
-console.log(buyer.getAll());
+    let data = {
+        total: `${cart.getTotalPrice()} синапсов`,
+        content: basketCatalog
+    }
 
-// Проверка отправки заказа на сервер
-const finalBuyer: IBuyer = {
-    payment: "CASH",
-    email: "A@A.com",
-    phone: "81112223344",
-    address: "Moscow, Kremlin",
-};
-
-if (newProduct3) {
-    cart.set(newProduct3);
-}
-if (newProduct2) {
-    cart.set(newProduct2);
+    modal.render({content: basket.render(data)});
 }
 
-const newOrder: IOrder = {
-    ...finalBuyer,
-    total: cart.getTotalPrice(),
-    items: cart.getAll().map(item => {
-        return item.id;
-    })
-}
-
-try {
-    const order = await api.save(newOrder);
-    console.log(order);
-} catch (error) {
-    console.log(error);
+function renderOrder(order: Order): void {
+    modal.clear();
+    order.errors = buyer.validate();
+    modal.render({
+        content: order.render({
+            payment: buyer.getAll().payment,
+            address: buyer.getAll().address
+        })
+    });
 }

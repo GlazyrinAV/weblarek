@@ -4,33 +4,37 @@ import {ensureElement} from "../../../utils/utils.ts";
 
 interface IBasketData {
     content: HTMLElement[];
-    total: number;
+    total: string;
 }
 
 export class Basket extends Component<IBasketData> {
-    protected basketElement: HTMLUListElement;
+    protected basketElement: HTMLElement;
     protected totalPriceElement: HTMLElement;
     protected makeOderButton: HTMLButtonElement;
 
-    protected constructor(protected events: IEvents, container: HTMLElement) {
+    constructor(protected events: IEvents, container: HTMLElement) {
         super(container);
 
-        this.basketElement = ensureElement<HTMLUListElement>('basket__list', this.container);
-        this.totalPriceElement = ensureElement<HTMLElement>('basket__price', this.container);
-        this.makeOderButton = ensureElement<HTMLButtonElement>('basket__button', this.container);
+        this.basketElement = ensureElement<HTMLElement>('.basket__list', this.container);
+        this.totalPriceElement = ensureElement<HTMLElement>('.basket__price', this.container);
+        this.makeOderButton = ensureElement<HTMLButtonElement>('.basket__button', this.container);
 
         this.makeOderButton.addEventListener('click', () => {
-            this.events.emit('order:create');
+            this.events.emit('order:new');
         });
     }
 
-    public set basket(items: HTMLElement[]) {
-        items.forEach(item => {
-            let basketItem = document.createElement('li');
-            basketItem.append(item);
-            basketItem.classList.add('basket__item');
-            this.basketElement.append(basketItem);
-        })
+    public set content(items: HTMLElement[]) {
+        if (items.length > 0) {
+            items.forEach(item => {
+                let basketItem = document.createElement('li');
+                basketItem.append(item);
+                this.basketElement.append(item);
+            })
+        } else {
+            this.makeOderButton.disabled = true;
+        }
+
     }
 
     public set total(total: number) {
