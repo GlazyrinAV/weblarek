@@ -11,15 +11,13 @@ interface IOrderData {
 export class Order extends OrderForm<IOrderData> {
     protected cardButton: HTMLButtonElement;
     protected cashButton: HTMLButtonElement;
-    protected orderButton: HTMLButtonElement;
     protected addressElement: HTMLInputElement;
 
     constructor(protected events: IEvents, container: HTMLElement) {
-        super(container);
+        super(events, container);
 
         this.cardButton = ensureElement<HTMLButtonElement>('button[name="card"]', this.container);
         this.cashButton = ensureElement<HTMLButtonElement>('button[name="cash"]', this.container);
-        this.orderButton = ensureElement<HTMLButtonElement>('.order__button', this.container);
         this.addressElement = ensureElement<HTMLInputElement>('input[name="address"]', this.container);
 
         this.cardButton.addEventListener('click', () => {
@@ -30,17 +28,17 @@ export class Order extends OrderForm<IOrderData> {
             this.events.emit('order:cash');
         });
 
-        this.orderButton.addEventListener('click', () => {
+        this.orderButton.addEventListener('click', (event) => {
+            event.preventDefault();
             this.events.emit('order:continue')
         });
 
-        function debounce<T extends Function>(func: T, delay: number): (...args: any[]) => void {
+        function debounce<T extends Function>(func: T, delay: number): () => void {
             let timeoutId: ReturnType<typeof setTimeout>;
-            return function (this: any, ...args: any[]) {
-                const context = this;
+            return function (this: any) {
                 clearTimeout(timeoutId);
                 timeoutId = setTimeout(() => {
-                    func.apply(context, args);
+                    func.apply(this);
                 }, delay);
             };
         }

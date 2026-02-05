@@ -152,6 +152,16 @@ eventEmitter.on('buyer:setAddress', () => {
     }
 });
 
+// order:validationSuccess
+eventEmitter.on('order:validationSuccess', () => {
+    order.activeButton();
+});
+
+// order:validationFail
+eventEmitter.on('order:validationFail', () => {
+    order.deActiveButton();
+});
+
 //Получение от сервера списка товаров
 await api.findAll().then(data => {
     products.setAll(data);
@@ -159,7 +169,6 @@ await api.findAll().then(data => {
     .catch(error => console.log(error));
 
 // отрисовка модального окна с корзиной товаров при изменении её состава
-
 function renderBasket(): void {
     const basketContainer = cloneTemplate("#basket");
     const basket = new Basket(eventEmitter, basketContainer);
@@ -182,7 +191,8 @@ function renderBasket(): void {
     modal.render({content: basket.render(data)});
 }
 
-function renderOrder(order: Order): void {
+// отрисовка заказа
+function renderOrder(order: Order | Contacts): void {
     modal.clear();
     order.errors = buyer.validate();
     modal.render({

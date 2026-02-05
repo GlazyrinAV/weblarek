@@ -10,14 +10,12 @@ interface IContactsData {
 export class Contacts extends OrderForm<IContactsData> {
     protected emailElement: HTMLInputElement;
     protected phoneElement: HTMLInputElement;
-    protected sendOrderElement: HTMLButtonElement;
 
     constructor(protected events: IEvents, container: HTMLElement) {
-        super(container);
+        super(events, container);
 
         this.emailElement = ensureElement<HTMLInputElement>('.email', this.container);
         this.phoneElement = ensureElement<HTMLInputElement>('.phone', this.container);
-        this.sendOrderElement = ensureElement<HTMLButtonElement>('.button', this.container);
 
         this.emailElement.addEventListener('input', () => {
             this.events.emit('order:email');
@@ -27,7 +25,7 @@ export class Contacts extends OrderForm<IContactsData> {
             this.events.emit('order:phone');
         });
 
-        this.sendOrderElement.addEventListener('click', () => {
+        this.orderButton.addEventListener('click', () => {
             this.events.emit('order:send');
         });
     }
