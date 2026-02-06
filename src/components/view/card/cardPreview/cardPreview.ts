@@ -14,10 +14,10 @@ interface ICardPreviewData {
 }
 
 export class CardPreview extends Card<ICardPreviewData> {
-    protected categoryElement: HTMLElement;
-    protected imageElement: HTMLImageElement;
-    protected descriptionElement: HTMLElement;
-    protected cardButton: HTMLButtonElement;
+    private categoryElement: HTMLElement;
+    private imageElement: HTMLImageElement;
+    private descriptionElement: HTMLElement;
+    private cardButton: HTMLButtonElement;
 
     constructor(protected events: IEvents, container: HTMLElement) {
         super(container);

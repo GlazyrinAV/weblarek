@@ -38,7 +38,7 @@ let contact: Contacts;
 
 // product:receivedCatalog
 eventEmitter.on('product:receivedCatalog', () => {
-    let catalog: HTMLElement[] = [];
+    const catalog: HTMLElement[] = [];
 
     products.getAll().forEach(element => {
         const productContainer = cloneTemplate('#card-catalog');
@@ -220,7 +220,7 @@ eventEmitter.on('cart:empty', () => {
 function renderBasket(): void {
     const basketContainer = cloneTemplate("#basket");
     const basket = new Basket(eventEmitter, basketContainer);
-    let basketCatalog: HTMLElement[] = [];
+    const basketCatalog: HTMLElement[] = [];
 
     const cartProducts = cart.getAll();
 
@@ -231,7 +231,7 @@ function renderBasket(): void {
         basketCatalog.push(productElement.render(cartProducts[i]));
     }
 
-    let data = {
+    const data = {
         total: `${cart.getTotalPrice()} синапсов`,
         content: basketCatalog
     }

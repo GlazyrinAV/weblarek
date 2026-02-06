@@ -9,9 +9,9 @@ export class ApiController {
     }
 
     public async findAll(): Promise<IProduct[]> {
-        return this._api.get("/product/")
+        return this._api.get<IProductList>("/product/")
             .then(data => {
-                return (data as IProductList).items;
+                return (data).items;
             })
             .catch(error => {
                 throw new Error(error.message);
@@ -19,9 +19,9 @@ export class ApiController {
     }
 
     public async save(order: IOrder): Promise<IOrderResult> {
-        return this._api.post("/order/", order)
+        return this._api.post<IOrderResult>("/order/", order)
             .then(success => {
-                return (success as IOrderResult);
+                return (success);
             })
             .catch(error => {
                 throw new Error(error.message);

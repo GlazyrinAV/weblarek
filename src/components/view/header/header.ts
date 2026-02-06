@@ -7,10 +7,10 @@ interface IHeaderData {
 }
 
 export class Header extends Component<IHeaderData> {
-    protected basketButton: HTMLButtonElement;
-    protected counterElement: HTMLElement;
+    private basketButton: HTMLButtonElement;
+    private counterElement: HTMLElement;
 
-    constructor(protected events: IEvents, container: HTMLElement) {
+    constructor(private events: IEvents, container: HTMLElement) {
         super(container);
         this.basketButton = ensureElement<HTMLButtonElement>('.header__basket', this.container);
         this.counterElement = ensureElement<HTMLElement>('.header__basket-counter', this.container);

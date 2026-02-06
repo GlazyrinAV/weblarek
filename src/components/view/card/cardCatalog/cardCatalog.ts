@@ -13,9 +13,9 @@ interface ICardCatalogData {
 }
 
 export class CardCatalog extends Card<ICardCatalogData> {
-    protected categoryElement: HTMLElement;
-    protected imageElement: HTMLImageElement;
-    protected cardButton: HTMLButtonElement;
+    private categoryElement: HTMLElement;
+    private imageElement: HTMLImageElement;
+    private cardButton: HTMLButtonElement;
 
     constructor(protected events: IEvents, container: HTMLElement) {
         super(container);

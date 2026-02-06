@@ -8,8 +8,8 @@ interface IContactsData {
 }
 
 export class Contacts extends OrderForm<IContactsData> {
-    protected emailElement: HTMLInputElement;
-    protected phoneElement: HTMLInputElement;
+    private emailElement: HTMLInputElement;
+    private phoneElement: HTMLInputElement;
 
     constructor(protected events: IEvents, container: HTMLElement) {
         super(events, container);

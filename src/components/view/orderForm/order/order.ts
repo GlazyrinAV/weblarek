@@ -9,9 +9,9 @@ interface IOrderData {
 }
 
 export class Order extends OrderForm<IOrderData> {
-    protected cardButton: HTMLButtonElement;
-    protected cashButton: HTMLButtonElement;
-    protected addressElement: HTMLInputElement;
+    private cardButton: HTMLButtonElement;
+    private cashButton: HTMLButtonElement;
+    private addressElement: HTMLInputElement;
 
     constructor(protected events: IEvents, container: HTMLElement) {
         super(events, container);

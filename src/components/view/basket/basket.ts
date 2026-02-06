@@ -8,11 +8,11 @@ interface IBasketData {
 }
 
 export class Basket extends Component<IBasketData> {
-    protected basketElement: HTMLElement;
-    protected totalPriceElement: HTMLElement;
-    protected makeOderButton: HTMLButtonElement;
+    private basketElement: HTMLElement;
+    private totalPriceElement: HTMLElement;
+    private makeOderButton: HTMLButtonElement;
 
-    constructor(protected events: IEvents, container: HTMLElement) {
+    constructor(private events: IEvents, container: HTMLElement) {
         super(container);
 
         this.basketElement = ensureElement<HTMLElement>('.basket__list', this.container);
@@ -27,14 +27,11 @@ export class Basket extends Component<IBasketData> {
     public set content(items: HTMLElement[]) {
         if (items.length > 0) {
             items.forEach(item => {
-                let basketItem = document.createElement('li');
-                basketItem.append(item);
                 this.basketElement.append(item);
             })
-        } else {
-            this.makeOderButton.disabled = true;
         }
 
+        this.makeOderButton.disabled = items.length === 0;
     }
 
     public set total(total: number) {

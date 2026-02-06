@@ -10,8 +10,8 @@ interface ICardBasketData {
 }
 
 export class CardBasket extends Card<ICardBasketData> {
-    protected indexElement: HTMLElement;
-    protected deleteButton: HTMLButtonElement;
+    private indexElement: HTMLElement;
+    private deleteButton: HTMLButtonElement;
 
     constructor(protected events: IEvents, container: HTMLElement) {
         super(container);
