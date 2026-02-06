@@ -1,10 +1,9 @@
 import {Card} from "../card.ts";
-import {IEvents} from "../../../base/Events.ts";
 import {ensureElement} from "../../../../utils/utils.ts";
 import {categoryMap, CDN_URL} from "../../../../utils/constants.ts";
+import {ICardAction} from "../../../../types";
 
 interface ICardPreviewData {
-    id: string;
     category: string;
     title: string;
     description: string;
@@ -19,18 +18,17 @@ export class CardPreview extends Card<ICardPreviewData> {
     private descriptionElement: HTMLElement;
     private cardButton: HTMLButtonElement;
 
-    constructor(protected events: IEvents, container: HTMLElement) {
+    constructor(container: HTMLElement, actions?: ICardAction) {
         super(container);
 
         this.categoryElement = ensureElement<HTMLElement>('.card__category', this.container);
         this.imageElement = ensureElement<HTMLImageElement>('.card__image', this.container);
         this.descriptionElement = ensureElement<HTMLElement>('.card__text', this.container);
         this.cardButton = ensureElement<HTMLButtonElement>('.card__button', this.container);
-        this.cardButton.dataset.type = 'add';
 
-        this.cardButton.addEventListener('click', () => {
-            events.emit('card:buttonAction', this.cardButton);
-        });
+        if (actions?.onClick) {
+            this.cardButton.addEventListener('click', actions.onClick);
+        }
     }
 
     public set category(category: string) {
@@ -51,7 +49,6 @@ export class CardPreview extends Card<ICardPreviewData> {
     }
 
     public changeButtonToRemove(): void {
-        this.cardButton.dataset.type = 'remove';
         this.cardButton.textContent = 'Удалить из корзины';
     }
 

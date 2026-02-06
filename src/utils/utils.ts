@@ -136,3 +136,13 @@ export function createElement<
     }
     return element;
 }
+
+export function debounce<T extends Function>(func: T, delay: number): () => void {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return function (this: any) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this);
+        }, delay);
+    };
+}

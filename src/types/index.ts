@@ -41,3 +41,7 @@ export interface IOrderResult {
 export interface IValidationResult {
     [key: string]: string;
 }
+
+export interface ICardAction {
+    onClick: EventListenerOrEventListenerObject;
+}

@@ -14,35 +14,28 @@ export abstract class OrderForm<T> extends Component<T> {
         this.orderButton = ensureElement<HTMLButtonElement>('button[type="submit"]', this.container);
     }
 
-    public set errors(errors: IValidationResult) {
+    public set errors(errors: Partial<IValidationResult>) {
         this.errorsElement.replaceChildren();
+        let result = true;
 
-        if ((this.container as HTMLFormElement).name === 'order') {
-            this.checkErrors([errors['payment'], errors['address']]);
-        } else {
-            this.checkErrors([errors['phone'], errors['email']]);
-        }
-    }
-
-    public activeButton(): void {
-        this.orderButton.disabled = false;
-    }
-
-    public deActiveButton(): void {
-        this.orderButton.disabled = true;
-    }
-
-    private checkErrors(errors: string[]): void {
-        errors.forEach(error => {
+        Object.values(errors).forEach(error => {
             if (error) {
                 const element = document.createElement("p");
                 element.textContent = error;
                 this.errorsElement.append(element);
+                result = false;
             }
         });
 
-        errors.filter(error => error != null).length === 0 ?
-            this.events.emit('order:validationSuccess', this.container) :
-            this.events.emit('order:validationFail', this.container);
+        result ? this.activeButton() :
+            this.deActiveButton();
+    }
+
+    private activeButton(): void {
+        this.orderButton.disabled = false;
+    }
+
+    private deActiveButton(): void {
+        this.orderButton.disabled = true;
     }
 }

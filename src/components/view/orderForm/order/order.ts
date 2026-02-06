@@ -1,5 +1,5 @@
 import {IEvents} from "../../../base/Events.ts";
-import {ensureElement} from "../../../../utils/utils.ts";
+import {debounce, ensureElement} from "../../../../utils/utils.ts";
 import {TPayment} from "../../../../types";
 import {OrderForm} from "../orderForm.ts";
 
@@ -33,19 +33,11 @@ export class Order extends OrderForm<IOrderData> {
             this.events.emit('contacts:new')
         });
 
-        function debounce<T extends Function>(func: T, delay: number): () => void {
-            let timeoutId: ReturnType<typeof setTimeout>;
-            return function (this: any) {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    func.apply(this);
-                }, delay);
-            };
-        }
-
-        this.addressElement.addEventListener('input', debounce(() => {
-            this.events.emit('order:address', this.addressElement);
-        }, 300));
+        this.addressElement.addEventListener('input',
+            debounce(() => {
+                this.events.emit('order:address');
+                this.addressElement.focus();
+            }, 500));
     }
 
     public set address(address: string) {
@@ -64,5 +56,9 @@ export class Order extends OrderForm<IOrderData> {
             this.cashButton.classList.remove('button_alt-active');
             this.cardButton.classList.add('button_alt-active');
         }
+    }
+
+    public get address(): string {
+        return this.addressElement.value;
     }
 }
