@@ -14,18 +14,29 @@ export class Contacts extends OrderForm<IContactsData> {
     constructor(protected events: IEvents, container: HTMLElement) {
         super(events, container);
 
-        this.emailElement = ensureElement<HTMLInputElement>('.email', this.container);
-        this.phoneElement = ensureElement<HTMLInputElement>('.phone', this.container);
+        this.emailElement = ensureElement<HTMLInputElement>('input[name="email"]', this.container);
+        this.phoneElement = ensureElement<HTMLInputElement>('input[name="phone"]', this.container);
 
-        this.emailElement.addEventListener('input', () => {
-            this.events.emit('order:email');
-        });
+        function debounce<T extends Function>(func: T, delay: number): () => void {
+            let timeoutId: ReturnType<typeof setTimeout>;
+            return function (this: any) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func.apply(this);
+                }, delay);
+            };
+        }
 
-        this.phoneElement.addEventListener('input', () => {
-            this.events.emit('order:phone');
-        });
+        this.emailElement.addEventListener('input', debounce(() => {
+            this.events.emit('order:email', this.emailElement);
+        }, 300));
 
-        this.orderButton.addEventListener('click', () => {
+        this.emailElement.addEventListener('input', debounce(() => {
+            this.events.emit('order:phone', this.phoneElement);
+        }, 300));
+
+        this.orderButton.addEventListener('click', (event) => {
+            event.preventDefault();
             this.events.emit('order:send');
         });
     }

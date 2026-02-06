@@ -16,12 +16,13 @@ export class OrderResult extends Component<IOrderResult> {
         this.descriptionElement = ensureElement<HTMLElement>('.order-success__description', this.container);
         this.closeButton = ensureElement<HTMLButtonElement>('.order-success__close', this.container);
 
-        this.closeButton.addEventListener('click', () => {
-            events.emit('result:close');
+        this.closeButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            events.emit('result:ok');
         });
     }
 
-    public set description(total: number) {
+    public set total(total: number) {
         this.descriptionElement.textContent = `Списано ${total} синапсов`;
     }
 }

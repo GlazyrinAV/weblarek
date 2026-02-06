@@ -12,7 +12,7 @@ export class Products {
 
     public setAll(data: IProduct[]): void {
         data.forEach(item => this.products.push(item))
-        this.events.emit('product:setAll');
+        this.events.emit('product:receivedCatalog');
     }
 
     public getAll(): IProduct[] {
@@ -25,7 +25,7 @@ export class Products {
 
     public setCurrentProduct(product: IProduct): void {
         this.currentProduct = product;
-        this.events.emit('product:setCurrent')
+        this.events.emit('product:chosenCurrent')
     }
 
     public getCurrentProduct(): IProduct | null {

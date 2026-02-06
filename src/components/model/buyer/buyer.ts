@@ -16,19 +16,19 @@ export class Buyer {
     set(buyer: Partial<IBuyer>): void {
         if (buyer.address != null) {
             this.buyer.address = buyer.address;
-            this.events.emit('buyer:setAddress');
+            this.events.emit('buyer:changeOrder');
         }
         if (buyer.email != null) {
             this.buyer.email = buyer.email;
-            this.events.emit('buyer:setEmail');
+            this.events.emit('buyer:changeContacts');
         }
         if (buyer.payment) {
             this.buyer.payment = buyer.payment;
-            this.events.emit('buyer:setPayment');
+            this.events.emit('buyer:changeOrder');
         }
         if (buyer.phone != null) {
             this.buyer.phone = buyer.phone;
-            this.events.emit('buyer:setPhone');
+            this.events.emit('buyer:changeContacts');
         }
     }
 
@@ -43,6 +43,7 @@ export class Buyer {
             payment: null,
             phone: ""
         };
+        this.events.emit('buyer:empty');
     }
 
     validate(): IValidationResult {

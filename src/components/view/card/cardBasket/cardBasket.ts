@@ -20,7 +20,7 @@ export class CardBasket extends Card<ICardBasketData> {
         this.deleteButton = ensureElement<HTMLButtonElement>('.basket__item-delete', this.container);
 
         this.deleteButton.addEventListener('click', () => {
-            events.emit('card:remove', this.container.dataset);
+            events.emit('card:removeButton', this.container.dataset);
         });
     }
 

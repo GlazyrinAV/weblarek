@@ -24,11 +24,11 @@ export abstract class OrderForm<T> extends Component<T> {
         }
     }
 
-    public activeButton() {
+    public activeButton(): void {
         this.orderButton.disabled = false;
     }
 
-    public deActiveButton() {
+    public deActiveButton(): void {
         this.orderButton.disabled = true;
     }
 
@@ -42,6 +42,7 @@ export abstract class OrderForm<T> extends Component<T> {
         });
 
         errors.filter(error => error != null).length === 0 ?
-            this.events.emit('order:validationSuccess') : this.events.emit('order:validationFail');
+            this.events.emit('order:validationSuccess', this.container) :
+            this.events.emit('order:validationFail', this.container);
     }
 }

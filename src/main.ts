@@ -16,6 +16,7 @@ import {Basket} from "./components/view/basket/basket.ts";
 import {CardBasket} from "./components/view/card/cardBasket/cardBasket.ts";
 import {Order} from "./components/view/orderForm/order/order.ts";
 import {Contacts} from "./components/view/orderForm/contacts/contacts.ts";
+import {OrderResult} from "./components/view/orderResult/orderResult.ts";
 
 // IEvent
 const eventEmitter = new EventEmitter();
@@ -35,8 +36,8 @@ const modal = new Modal(eventEmitter, document.body);
 let order: Order;
 let contact: Contacts;
 
-// product:setAll
-eventEmitter.on('product:setAll', () => {
+// product:receivedCatalog
+eventEmitter.on('product:receivedCatalog', () => {
     let catalog: HTMLElement[] = [];
 
     products.getAll().forEach(element => {
@@ -56,8 +57,8 @@ eventEmitter.on('card:open', (data: HTMLDataElement) => {
     }
 });
 
-// product:setCurrent
-eventEmitter.on('product:setCurrent', () => {
+// product:chosenCurrent
+eventEmitter.on('product:chosenCurrent', () => {
     const product = products.getCurrentProduct();
     const productContainer = cloneTemplate('#card-preview');
     const productElement = new CardPreview(eventEmitter, productContainer);
@@ -75,13 +76,13 @@ eventEmitter.on('product:setCurrent', () => {
     }
 })
 
-// modal:close
-eventEmitter.on('modal:close', (container: Modal) => {
+// modal:closeButton
+eventEmitter.on('modal:closeButton', (container: Modal) => {
     container.closeModal();
 });
 
-// card:action
-eventEmitter.on('card:action', (data) => {
+// card:buttonAction
+eventEmitter.on('card:buttonAction', (data) => {
     const product = products.getCurrentProduct();
     if (product) {
         if ((data as HTMLButtonElement).dataset.type === 'add') {
@@ -92,13 +93,13 @@ eventEmitter.on('card:action', (data) => {
     }
 });
 
-// basket:open
-eventEmitter.on('basket:open', () => {
+// header:basket
+eventEmitter.on('header:basket', () => {
     renderBasket();
 });
 
-// card:remove
-eventEmitter.on('card:remove', (data: HTMLDataElement) => {
+// card:removeButton
+eventEmitter.on('card:removeButton', (data: HTMLDataElement) => {
     cart.remove(data.id);
 });
 
@@ -133,40 +134,87 @@ eventEmitter.on('order:cash', () => {
     buyer.set({payment: "CASH"});
 });
 
-// buyer:setPayment
-eventEmitter.on('buyer:setPayment', () => {
-    if (order) {
-        renderOrder(order);
-    }
-});
-
 // order:address
 eventEmitter.on('order:address', (data: HTMLInputElement) => {
     buyer.set({address: data.value});
 });
 
-// buyer:setAddress
-eventEmitter.on('buyer:setAddress', () => {
+// order:email
+eventEmitter.on('order:email', (data: HTMLInputElement) => {
+    buyer.set({email: data.value});
+});
+
+// order:phone
+eventEmitter.on('order:phone', (data: HTMLInputElement) => {
+    buyer.set({phone: data.value});
+});
+
+// order:validationSuccess
+eventEmitter.on('order:validationSuccess', (data: HTMLFormElement) => {
+    data.name === 'order' ? order.activeButton() : contact.activeButton();
+
+});
+
+// order:validationFail
+eventEmitter.on('order:validationFail', (data: HTMLFormElement) => {
+    data.name === 'order' ? order.deActiveButton() : contact.deActiveButton();
+});
+
+// order:send
+eventEmitter.on('order:send', () => {
+    const resultContainer = cloneTemplate('#success');
+    const result = new OrderResult(eventEmitter, resultContainer);
+
+    api.save({
+        ...buyer.getAll(),
+        total: cart.getTotalPrice(),
+        items: cart.getAll().map(item => {
+            return item.id;
+        }),
+    })
+        .then(data => {
+            const resultElement = result.render({total: data.total});
+
+            modal.clear();
+            modal.render({content: resultElement});
+
+            cart.clear();
+            buyer.clear();
+        })
+        .catch(error => console.log(error.message));
+});
+
+// buyer:changeOrder
+eventEmitter.on('buyer:changeOrder', () => {
     if (order) {
         renderOrder(order);
     }
 });
 
-// order:validationSuccess
-eventEmitter.on('order:validationSuccess', () => {
-    order.activeButton();
+// buyer:changeContacts
+eventEmitter.on('buyer:changeContacts', () => {
+    if (contact) {
+        renderOrder(contact);
+    }
 });
 
-// order:validationFail
-eventEmitter.on('order:validationFail', () => {
-    order.deActiveButton();
+// contacts:new
+eventEmitter.on('contacts:new', () => {
+    const contactContainer = cloneTemplate('#contacts');
+    contact = new Contacts(eventEmitter, contactContainer);
+
+    renderOrder(contact);
 });
 
-//Получение от сервера списка товаров
-await api.findAll().then(data => {
-    products.setAll(data);
-})
-    .catch(error => console.log(error));
+// result:ok
+eventEmitter.on('result:ok', () => {
+    modal.closeModal();
+});
+
+// cart:empty
+eventEmitter.on('cart:empty', () => {
+    header.counter = cart.getTotalCount();
+});
 
 // отрисовка модального окна с корзиной товаров при изменении её состава
 function renderBasket(): void {
@@ -195,10 +243,25 @@ function renderBasket(): void {
 function renderOrder(order: Order | Contacts): void {
     modal.clear();
     order.errors = buyer.validate();
-    modal.render({
-        content: order.render({
-            payment: buyer.getAll().payment,
-            address: buyer.getAll().address
-        })
-    });
+    if (order instanceof Order) {
+        modal.render({
+            content: order.render({
+                payment: buyer.getAll().payment,
+                address: buyer.getAll().address
+            })
+        });
+    } else {
+        modal.render({
+            content: order.render({
+                phone: buyer.getAll().phone,
+                email: buyer.getAll().email
+            })
+        });
+    }
 }
+
+//Получение от сервера списка товаров
+await api.findAll().then(data => {
+    products.setAll(data);
+})
+    .catch(error => console.log(error));

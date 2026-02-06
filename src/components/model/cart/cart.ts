@@ -27,7 +27,7 @@ export class Cart {
 
     public clear(): void {
         this.cart.clear();
-        this.events.emit('cart:change');
+        this.events.emit('cart:empty');
     }
 
     public getTotalPrice(): number {

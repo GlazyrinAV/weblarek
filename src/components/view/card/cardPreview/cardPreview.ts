@@ -29,7 +29,7 @@ export class CardPreview extends Card<ICardPreviewData> {
         this.cardButton.dataset.type = 'add';
 
         this.cardButton.addEventListener('click', () => {
-            events.emit('card:action', this.cardButton);
+            events.emit('card:buttonAction', this.cardButton);
         });
     }
 

@@ -30,7 +30,7 @@ export class Order extends OrderForm<IOrderData> {
 
         this.orderButton.addEventListener('click', (event) => {
             event.preventDefault();
-            this.events.emit('order:continue')
+            this.events.emit('contacts:new')
         });
 
         function debounce<T extends Function>(func: T, delay: number): () => void {
