@@ -17,7 +17,7 @@ import {CardBasket} from "./components/view/card/cardBasket/cardBasket.ts";
 import {Order} from "./components/view/orderForm/order/order.ts";
 import {Contacts} from "./components/view/orderForm/contacts/contacts.ts";
 import {OrderResult} from "./components/view/orderResult/orderResult.ts";
-import {IProduct} from "./types";
+import {IInputData, IProduct} from "./types";
 
 // IEvent
 const eventEmitter = new EventEmitter();
@@ -111,7 +111,7 @@ eventEmitter.on('card:removeButton', (data: IProduct) => {
 
 // cart:change
 eventEmitter.on('cart:change', () => {
-    if (modal.content.querySelector('.basket')) {
+    if (document.body.querySelector('.modal__content > .basket')) {
         modal.clear();
         renderBasket();
     } else {
@@ -137,18 +137,21 @@ eventEmitter.on('order:cash', () => {
 });
 
 // order:address
-eventEmitter.on('order:address', () => {
-    buyer.set({address: order.address});
+eventEmitter.on('order:address', (data: IInputData) => {
+    const value = data.value;
+    buyer.set({address: value});
 });
 
 // order:email
-eventEmitter.on('order:email', () => {
-    buyer.set({email: contact.email});
+eventEmitter.on('order:email', (data: IInputData) => {
+    const value = data.value;
+    buyer.set({email: value});
 });
 
 // order:phone
-eventEmitter.on('order:phone', () => {
-    buyer.set({phone: contact.phone});
+eventEmitter.on('order:phone', (data: IInputData) => {
+    const value = data.value;
+    buyer.set({phone: value});
 });
 
 // order:send

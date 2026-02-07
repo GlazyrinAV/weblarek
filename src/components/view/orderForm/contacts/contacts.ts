@@ -19,13 +19,13 @@ export class Contacts extends OrderForm<IContactsData> {
 
         this.emailElement.addEventListener('input',
             debounce(() => {
-                this.events.emit('order:email');
+                this.events.emit('order:email', {value: this.emailElement.value});
                 this.emailElement.focus();
             }, 500));
 
         this.phoneElement.addEventListener('input',
             debounce(() => {
-                this.events.emit('order:phone');
+                this.events.emit('order:phone', {value: this.phoneElement.value});
                 this.phoneElement.focus();
             }, 500));
 
@@ -41,13 +41,5 @@ export class Contacts extends OrderForm<IContactsData> {
 
     public set phone(phone: string) {
         this.phoneElement.value = phone;
-    }
-
-    public get email(): string {
-        return this.emailElement.value;
-    }
-
-    public get phone(): string {
-        return this.phoneElement.value;
     }
 }

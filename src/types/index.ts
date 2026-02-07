@@ -45,3 +45,7 @@ export interface IValidationResult {
 export interface ICardAction {
     onClick: EventListenerOrEventListenerObject;
 }
+
+export interface IInputData {
+    value: string;
+}

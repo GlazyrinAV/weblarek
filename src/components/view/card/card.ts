@@ -16,6 +16,6 @@ export abstract class Card<T> extends Component<T> {
     }
 
     public set price(price: number | null) {
-        this.priceElement.textContent = price ? `${price} синапсов` : 'Бесценно';
+        this.priceElement.textContent = (price == null ? 'Бесценно' : `${price} синапсов`);
     }
 }

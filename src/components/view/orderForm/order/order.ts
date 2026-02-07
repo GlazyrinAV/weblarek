@@ -35,7 +35,7 @@ export class Order extends OrderForm<IOrderData> {
 
         this.addressElement.addEventListener('input',
             debounce(() => {
-                this.events.emit('order:address');
+                this.events.emit('order:address', {value: this.addressElement.value});
                 this.addressElement.focus();
             }, 500));
     }
@@ -56,9 +56,5 @@ export class Order extends OrderForm<IOrderData> {
             this.cashButton.classList.remove('button_alt-active');
             this.cardButton.classList.add('button_alt-active');
         }
-    }
-
-    public get address(): string {
-        return this.addressElement.value;
     }
 }

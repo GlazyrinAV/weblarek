@@ -35,10 +35,6 @@ export class Modal extends Component<IModalData> {
         this.modalElement.classList.add('modal_active');
     }
 
-    public get content(): HTMLElement {
-        return this.contentElement;
-    }
-
     public closeModal() {
         this.contentElement.replaceChildren();
         this.modalElement.classList.remove('modal_active');
