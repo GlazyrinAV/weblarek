@@ -2,17 +2,15 @@ import {Card} from "../card.ts";
 import {ensureElement} from "../../../../utils/utils.ts";
 import {categoryMap, CDN_URL} from "../../../../utils/constants.ts";
 import {ICardAction} from "../../../../types";
+import {CardWithImage} from "../cardWithImage.ts";
+import {ICardWithImageData} from '../cardWithImage.ts'
 
-interface ICardPreviewData {
+interface ICardPreviewData extends ICardWithImageData {
     category: string;
-    title: string;
     description: string;
-    image: string;
-    alt: string | null;
-    price: number | null;
 }
 
-export class CardPreview extends Card<ICardPreviewData> {
+export class CardPreview extends CardWithImage<ICardPreviewData> {
     private categoryElement: HTMLElement;
     private imageElement: HTMLImageElement;
     private descriptionElement: HTMLElement;

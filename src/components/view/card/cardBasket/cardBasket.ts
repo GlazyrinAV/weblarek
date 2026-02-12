@@ -1,11 +1,10 @@
 import {Card} from "../card.ts";
 import {ensureElement} from "../../../../utils/utils.ts";
 import {ICardAction} from "../../../../types";
+import {ICardDara} from './card'
 
-interface ICardBasketData {
+interface ICardBasketData extends ICardData{
     index: number;
-    title: string;
-    price: number | null;
 }
 
 export class CardBasket extends Card<ICardBasketData> {
