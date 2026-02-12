@@ -3,7 +3,7 @@ import {IEvents} from "../../base/Events.ts";
 
 export class Cart {
 
-    private cart: Set<IProduct> = new Set<IProduct>();
+    private readonly cart: Set<IProduct> = new Set<IProduct>();
 
     constructor(protected events: IEvents) {
     }

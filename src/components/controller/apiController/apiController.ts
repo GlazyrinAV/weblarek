@@ -2,7 +2,7 @@ import {IApi, IOrder, IOrderResult, IProduct, IProductList} from "../../../types
 
 export class ApiController {
 
-    private _api: IApi;
+    private readonly _api: IApi;
 
     constructor(api: IApi) {
         this._api = api;

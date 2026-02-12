@@ -7,8 +7,8 @@ interface IOrderResult {
 }
 
 export class OrderResult extends Component<IOrderResult> {
-    private descriptionElement: HTMLElement;
-    private closeButton: HTMLButtonElement;
+    private readonly descriptionElement: HTMLElement;
+    private readonly closeButton: HTMLButtonElement;
 
     constructor(protected events: IEvents, container: HTMLElement) {
         super(container);

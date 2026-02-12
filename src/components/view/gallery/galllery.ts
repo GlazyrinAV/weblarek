@@ -6,7 +6,7 @@ interface IGalleryData {
 }
 
 export class Gallery extends Component<IGalleryData> {
-    private catalogElement: HTMLElement;
+    private readonly catalogElement: HTMLElement;
 
     constructor(container: HTMLElement) {
         super(container);

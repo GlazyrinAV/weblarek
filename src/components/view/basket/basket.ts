@@ -8,11 +8,11 @@ interface IBasketData {
 }
 
 export class Basket extends Component<IBasketData> {
-    private basketElement: HTMLElement;
-    private totalPriceElement: HTMLElement;
-    private makeOderButton: HTMLButtonElement;
+    private readonly basketElement: HTMLElement;
+    private readonly totalPriceElement: HTMLElement;
+    private readonly makeOderButton: HTMLButtonElement;
 
-    constructor(private events: IEvents, container: HTMLElement) {
+    constructor(private readonly events: IEvents, container: HTMLElement) {
         super(container);
 
         this.basketElement = ensureElement<HTMLElement>('.basket__list', this.container);

@@ -7,11 +7,11 @@ interface IModalData {
 }
 
 export class Modal extends Component<IModalData> {
-    private closeButton: HTMLButtonElement;
-    private modalElement: HTMLElement;
-    private contentElement: HTMLElement;
+    private readonly closeButton: HTMLButtonElement;
+    private readonly modalElement: HTMLElement;
+    private readonly contentElement: HTMLElement;
 
-    constructor(private events: IEvents, container: HTMLElement) {
+    constructor(private readonly events: IEvents, container: HTMLElement) {
         super(container);
 
         this.closeButton = ensureElement<HTMLButtonElement>('.modal__close', this.container);

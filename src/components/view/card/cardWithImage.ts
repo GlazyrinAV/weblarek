@@ -1,15 +1,14 @@
 import {ensureElement} from "../../../utils/utils.ts";
 import {CDN_URL} from "../../../utils/constants";
-import {Card} from './card';
-import {ICardDara} from './card'
+import {Card, ICardData} from './card';
 
-interface ICardWithImageData extends ICardData {
+export interface ICardWithImageData extends ICardData {
     image: string;
     alt: string | null
 }
 
-export abstract class CardWithImage<T> extends Card<T> {
-    private imageElement: HTMLImageElement;
+export abstract class CardWithImage<T extends ICardWithImageData> extends Card<T> {
+    protected imageElement: HTMLImageElement;
 
     protected constructor(container: HTMLElement) {
         super(container);

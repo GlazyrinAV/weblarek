@@ -3,7 +3,7 @@ import {IEvents} from "../../base/Events.ts";
 
 export class Products {
 
-    private products: IProduct[] = [];
+    private readonly products: IProduct[] = [];
 
     private currentProduct: IProduct | null = null;
 

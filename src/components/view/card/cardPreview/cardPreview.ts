@@ -1,9 +1,7 @@
-import {Card} from "../card.ts";
 import {ensureElement} from "../../../../utils/utils.ts";
-import {categoryMap, CDN_URL} from "../../../../utils/constants.ts";
+import {categoryMap} from "../../../../utils/constants.ts";
 import {ICardAction} from "../../../../types";
-import {CardWithImage} from "../cardWithImage.ts";
-import {ICardWithImageData} from '../cardWithImage.ts'
+import {CardWithImage, ICardWithImageData} from "../cardWithImage.ts";
 
 interface ICardPreviewData extends ICardWithImageData {
     category: string;
@@ -11,10 +9,9 @@ interface ICardPreviewData extends ICardWithImageData {
 }
 
 export class CardPreview extends CardWithImage<ICardPreviewData> {
-    private categoryElement: HTMLElement;
-    private imageElement: HTMLImageElement;
-    private descriptionElement: HTMLElement;
-    private cardButton: HTMLButtonElement;
+    private readonly categoryElement: HTMLElement;
+    private readonly descriptionElement: HTMLElement;
+    private readonly cardButton: HTMLButtonElement;
 
     constructor(container: HTMLElement, actions?: ICardAction) {
         super(container);
@@ -36,10 +33,6 @@ export class CardPreview extends CardWithImage<ICardPreviewData> {
                 this.categoryElement.classList.add(value);
             }
         }
-    }
-
-    public set image(src: string) {
-        this.setImage(this.imageElement, `${CDN_URL}${src}`);
     }
 
     public set description(text: string) {

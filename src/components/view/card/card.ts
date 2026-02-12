@@ -1,12 +1,12 @@
 import {ensureElement} from "../../../utils/utils.ts";
 import {Component} from "../../base/Component.ts";
 
-interface ICardData {
+export interface ICardData {
     title: string;
     price: number | null;
 }
 
-export abstract class Card extends Component<ICardData> {
+export abstract class Card<T extends ICardData> extends Component<T> {
     protected titleElement: HTMLElement;
     protected priceElement: HTMLElement;
 
