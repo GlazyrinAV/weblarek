@@ -1,13 +1,15 @@
 import {Component} from "../../base/Component.ts";
 import {IEvents} from "../../base/Events.ts";
 import {ensureElement} from "../../../utils/utils.ts";
+import {IBasketView} from "../../../types";
+import {EventsType} from "../../base/EventsType";
 
 interface IBasketData {
     content: HTMLElement[];
     total: string;
 }
 
-export class Basket extends Component<IBasketData> {
+export class Basket extends Component<IBasketData> implements IBasketView {
     private basketElement: HTMLElement;
     private totalPriceElement: HTMLElement;
     private makeOderButton: HTMLButtonElement;
@@ -20,7 +22,7 @@ export class Basket extends Component<IBasketData> {
         this.makeOderButton = ensureElement<HTMLButtonElement>('.basket__button', this.container);
 
         this.makeOderButton.addEventListener('click', () => {
-            this.events.emit('order:new');
+            this.events.emit(EventsType.OrderNew);
         });
     }
 
@@ -36,5 +38,9 @@ export class Basket extends Component<IBasketData> {
 
     public set total(total: number) {
         this.totalPriceElement.textContent = String(total);
+    }
+
+    public clear(): void {
+        this.basketElement.replaceChildren();
     }
 }

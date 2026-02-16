@@ -1,6 +1,6 @@
-import {IApi, IOrder, IOrderResult, IProduct, IProductList} from "../../../types";
+import {IApi, IApiController, IOrder, IOrderResult, IProduct, IProductList} from "../../../types";
 
-export class ApiController {
+export class ApiController implements IApiController {
 
     private _api: IApi;
 

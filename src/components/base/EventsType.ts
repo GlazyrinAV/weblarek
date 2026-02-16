@@ -1,0 +1,22 @@
+export enum EventsType {
+    BuyerChange,
+    BuyerEmpty,
+    CartChange,
+    CartEmpty,
+    ProductNewCatalog,
+    ProductChooseCurrent,
+    OrderNew,
+    OpenBasket,
+    ModalCloseButton,
+    CardOpen,
+    CardButtonAction,
+    CardRemoveButton,
+    OrderChooseCash,
+    OrderChooseCard,
+    OrderAddressChange,
+    OrderEmailChange,
+    OrderPhoneChange,
+    ContactsNew,
+    OrderSend,
+    ResultOkButton
+}

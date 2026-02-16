@@ -1,7 +1,8 @@
-import {IBuyer, IValidationResult} from "../../../types";
+import {IBuyer, IBuyerModel, IValidationResult} from "../../../types";
 import {IEvents} from "../../base/Events.ts";
+import {EventsType} from "../../base/EventsType";
 
-export class Buyer {
+export class Buyer implements IBuyerModel {
 
     private buyer: IBuyer = {
         address: "",
@@ -16,19 +17,19 @@ export class Buyer {
     set(buyer: Partial<IBuyer>): void {
         if (buyer.address != null) {
             this.buyer.address = buyer.address;
-            this.events.emit('buyer:change');
+            this.events.emit(EventsType.BuyerChange);
         }
         if (buyer.email != null) {
             this.buyer.email = buyer.email;
-            this.events.emit('buyer:change');
+            this.events.emit(EventsType.BuyerChange);
         }
         if (buyer.payment) {
             this.buyer.payment = buyer.payment;
-            this.events.emit('buyer:change');
+            this.events.emit(EventsType.BuyerChange);
         }
         if (buyer.phone != null) {
             this.buyer.phone = buyer.phone;
-            this.events.emit('buyer:change');
+            this.events.emit(EventsType.BuyerChange);
         }
     }
 
@@ -43,7 +44,7 @@ export class Buyer {
             payment: null,
             phone: ""
         };
-        this.events.emit('buyer:empty');
+        this.events.emit(EventsType.BuyerEmpty);
     }
 
     validate(): IValidationResult {

@@ -1,12 +1,14 @@
 import {Component} from "../../base/Component.ts";
 import {IEvents} from "../../base/Events.ts";
 import {ensureElement} from "../../../utils/utils.ts";
+import {IModalView} from "../../../types";
+import {EventsType} from "../../base/EventsType";
 
 interface IModalData {
     content: HTMLElement;
 }
 
-export class Modal extends Component<IModalData> {
+export class Modal extends Component<IModalData> implements IModalView {
     private closeButton: HTMLButtonElement;
     private modalElement: HTMLElement;
     private contentElement: HTMLElement;
@@ -19,13 +21,13 @@ export class Modal extends Component<IModalData> {
         this.contentElement = ensureElement<HTMLElement>('.modal__content', this.container);
 
         this.closeButton.addEventListener('click', () => {
-            this.events.emit('modal:closeButton');
+            this.events.emit(EventsType.ModalCloseButton);
         });
 
         this.modalElement.addEventListener('click', (event) => {
             const element = event.target as HTMLElement;
             if (element.id === 'modal-container') {
-                this.events.emit('modal:closeButton');
+                this.events.emit(EventsType.ModalCloseButton);
             }
         })
     }
@@ -35,12 +37,12 @@ export class Modal extends Component<IModalData> {
         this.modalElement.classList.add('modal_active');
     }
 
-    public closeModal() {
+    public closeModal(): void {
         this.contentElement.replaceChildren();
         this.modalElement.classList.remove('modal_active');
     }
 
-    public clear() {
+    public clear(): void {
         this.contentElement.replaceChildren();
     }
 }

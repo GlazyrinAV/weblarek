@@ -1,11 +1,12 @@
 import {Component} from "../../base/Component.ts";
 import {ensureElement} from "../../../utils/utils.ts";
+import {IGalleryView} from "../../../types";
 
 interface IGalleryData {
     catalog: HTMLElement[];
 }
 
-export class Gallery extends Component<IGalleryData> {
+export class Gallery extends Component<IGalleryData> implements IGalleryView {
     private catalogElement: HTMLElement;
 
     constructor(container: HTMLElement) {

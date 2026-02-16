@@ -1,12 +1,14 @@
 import {Component} from "../../base/Component.ts";
 import {IEvents} from "../../base/Events.ts";
 import {ensureElement} from "../../../utils/utils.ts";
+import {IOrderResultView} from "../../../types";
+import {EventsType} from "../../base/EventsType";
 
 interface IOrderResult {
     total: number;
 }
 
-export class OrderResult extends Component<IOrderResult> {
+export class OrderResult extends Component<IOrderResult> implements IOrderResultView {
     private descriptionElement: HTMLElement;
     private closeButton: HTMLButtonElement;
 
@@ -18,7 +20,7 @@ export class OrderResult extends Component<IOrderResult> {
 
         this.closeButton.addEventListener('click', (event) => {
             event.preventDefault();
-            events.emit('result:ok');
+            events.emit(EventsType.ResultOkButton);
         });
     }
 

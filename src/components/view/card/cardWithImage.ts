@@ -1,7 +1,7 @@
 import {ensureElement} from "../../../utils/utils.ts";
 import {categoryMap, CDN_URL} from "../../../utils/constants";
 import {Card} from './card';
-import {ICardDara} from './card'
+import {ICardWithImageView} from "../../../types";
 
 interface ICardWithImageData extends ICardData {
     image: string;
@@ -9,7 +9,7 @@ interface ICardWithImageData extends ICardData {
     alt: string | null
 }
 
-export abstract class CardWithImage<T> extends Card<T> {
+export abstract class CardWithImage<T> extends Card<T> implements ICardWithImageView {
     private imageElement: HTMLImageElement;
 
     protected constructor(container: HTMLElement) {

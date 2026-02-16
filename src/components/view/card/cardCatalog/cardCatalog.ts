@@ -1,11 +1,8 @@
-import {Card} from "../card.ts";
 import {ensureElement} from "../../../../utils/utils.ts";
-import {categoryMap, CDN_URL} from "../../../../utils/constants.ts";
-import {ICardAction} from "../../../../types";
-import {CardWithImage} from "../cardWithImage.ts";
-import {ICardWithImageData} from '../cardWithImage.ts'
+import {CardConstructable, ICardAction, ICardWithImageView} from "../../../../types";
+import {CardWithImage, ICardWithImageData} from "../cardWithImage.ts";
 
-export class CardCatalog extends CardWithImage<ICardWithImageData> {
+export class CardCatalog extends CardWithImage<ICardWithImageData> implements CardConstructable, ICardWithImageView {
     private categoryElement: HTMLElement;
     private imageElement: HTMLImageElement;
     private cardButton: HTMLButtonElement;

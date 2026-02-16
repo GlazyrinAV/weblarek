@@ -1,7 +1,9 @@
+import {IComponentView} from "../../types";
+
 /**
  * Базовый компонент
  */
-export abstract class Component<T> {
+export abstract class Component<T> implements IComponentView {
     protected constructor(protected readonly container: HTMLElement) {
         // Учитывайте что код в конструкторе исполняется ДО всех объявлений в дочернем классе
     }

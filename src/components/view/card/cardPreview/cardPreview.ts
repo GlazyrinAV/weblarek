@@ -1,13 +1,12 @@
 import {ensureElement} from "../../../../utils/utils.ts";
-import {categoryMap, CDN_URL} from "../../../../utils/constants.ts";
-import {ICardAction} from "../../../../types";
+import {CardConstructable, ICardAction, ICardPreviewView} from "../../../../types";
 import {CardWithImage, ICardWithImageData} from "../cardWithImage.ts";
 
 interface ICardPreviewData extends ICardWithImageData {
     description: string;
 }
 
-export class CardPreview extends CardWithImage<ICardPreviewData> {
+export class CardPreview extends CardWithImage<ICardPreviewData> implements CardConstructable, ICardPreviewView {
     private categoryElement: HTMLElement;
     private imageElement: HTMLImageElement;
     private descriptionElement: HTMLElement;

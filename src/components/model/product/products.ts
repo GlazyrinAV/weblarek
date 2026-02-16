@@ -1,7 +1,8 @@
-import {IProduct} from "../../../types";
+import {IProduct, IProductModel} from "../../../types";
 import {IEvents} from "../../base/Events.ts";
+import {EventsType} from "../../base/EventsType";
 
-export class Products {
+export class Products implements IProductModel {
 
     private products: IProduct[] = [];
 
@@ -12,7 +13,7 @@ export class Products {
 
     public setAll(data: IProduct[]): void {
         data.forEach(item => this.products.push(item))
-        this.events.emit('product:receivedCatalog');
+        this.events.emit(EventsType.ProductNewCatalog);
     }
 
     public getAll(): IProduct[] {
@@ -25,7 +26,7 @@ export class Products {
 
     public setCurrentProduct(product: IProduct): void {
         this.currentProduct = product;
-        this.events.emit('product:chosenCurrent')
+        this.events.emit(EventsType.ProductChooseCurrent)
     }
 
     public getCurrentProduct(): IProduct | null {

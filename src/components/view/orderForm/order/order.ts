@@ -1,14 +1,15 @@
 import {IEvents} from "../../../base/Events.ts";
 import {debounce, ensureElement} from "../../../../utils/utils.ts";
-import {TPayment} from "../../../../types";
+import {IOrderView, TPayment} from "../../../../types";
 import {OrderForm} from "../orderForm.ts";
+import {EventsType} from "../../../base/EventsType";
 
 interface IOrderData {
     payment: TPayment | null;
     address: string | null;
 }
 
-export class Order extends OrderForm<IOrderData> {
+export class Order extends OrderForm<IOrderData> implements IOrderView {
     private cardButton: HTMLButtonElement;
     private cashButton: HTMLButtonElement;
     private addressElement: HTMLInputElement;
@@ -21,21 +22,21 @@ export class Order extends OrderForm<IOrderData> {
         this.addressElement = ensureElement<HTMLInputElement>('input[name="address"]', this.container);
 
         this.cardButton.addEventListener('click', () => {
-            this.events.emit('order:card');
+            this.events.emit(EventsType.OrderChooseCard);
         });
 
         this.cashButton.addEventListener('click', () => {
-            this.events.emit('order:cash');
+            this.events.emit(EventsType.OrderChooseCash);
         });
 
         this.orderButton.addEventListener('click', (event) => {
             event.preventDefault();
-            this.events.emit('contacts:new')
+            this.events.emit(EventsType.ContactsNew)
         });
 
         this.addressElement.addEventListener('input',
             debounce(() => {
-                this.events.emit('order:address', {value: this.addressElement.value});
+                this.events.emit(EventsType.OrderAddressChange, {value: this.addressElement.value});
                 this.addressElement.focus();
             }, 500));
     }

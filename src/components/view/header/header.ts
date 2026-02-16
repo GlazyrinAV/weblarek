@@ -1,12 +1,14 @@
 import {ensureElement} from "../../../utils/utils.ts";
 import {Component} from "../../base/Component.ts";
 import {IEvents} from "../../base/Events.ts";
+import {IHeaderView} from "../../../types";
+import {EventsType} from "../../base/EventsType";
 
 interface IHeaderData {
     counter: number;
 }
 
-export class Header extends Component<IHeaderData> {
+export class Header extends Component<IHeaderData> implements IHeaderView {
     private basketButton: HTMLButtonElement;
     private counterElement: HTMLElement;
 
@@ -16,7 +18,7 @@ export class Header extends Component<IHeaderData> {
         this.counterElement = ensureElement<HTMLElement>('.header__basket-counter', this.container);
 
         this.basketButton.addEventListener('click', () => {
-            this.events.emit('header:basket');
+            this.events.emit(EventsType.OpenBasket);
         });
     }
 
