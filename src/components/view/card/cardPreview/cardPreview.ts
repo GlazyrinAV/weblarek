@@ -1,12 +1,9 @@
-import {Card} from "../card.ts";
 import {ensureElement} from "../../../../utils/utils.ts";
 import {categoryMap, CDN_URL} from "../../../../utils/constants.ts";
 import {ICardAction} from "../../../../types";
-import {CardWithImage} from "../cardWithImage.ts";
-import {ICardWithImageData} from '../cardWithImage.ts'
+import {CardWithImage, ICardWithImageData} from "../cardWithImage.ts";
 
 interface ICardPreviewData extends ICardWithImageData {
-    category: string;
     description: string;
 }
 
@@ -27,19 +24,6 @@ export class CardPreview extends CardWithImage<ICardPreviewData> {
         if (actions?.onClick) {
             this.cardButton.addEventListener('click', actions.onClick);
         }
-    }
-
-    public set category(category: string) {
-        this.categoryElement.textContent = category;
-        for (const [key, value] of Object.entries(categoryMap)) {
-            if (key === category) {
-                this.categoryElement.classList.add(value);
-            }
-        }
-    }
-
-    public set image(src: string) {
-        this.setImage(this.imageElement, `${CDN_URL}${src}`);
     }
 
     public set description(text: string) {

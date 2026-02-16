@@ -175,14 +175,13 @@ eventEmitter.on('order:send', () => {
         .catch(error => console.log(error.message));
 });
 
-// buyer:changeOrder
-eventEmitter.on('buyer:changeOrder', () => {
-    renderOrder(order);
-});
-
-// buyer:changeContacts
-eventEmitter.on('buyer:changeContacts', () => {
-    renderContacts(contact);
+// buyer:change
+eventEmitter.on('buyer:change', () => {
+    if (document.body.querySelector('.modal__content > form[name="contacts"]')) {
+        renderContacts(contact);
+    } else if (document.body.querySelector('.modal__content > form[name="order"]')) {
+        renderOrder(order);
+    }
 });
 
 // contacts:new

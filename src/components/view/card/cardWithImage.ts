@@ -1,10 +1,11 @@
 import {ensureElement} from "../../../utils/utils.ts";
-import {CDN_URL} from "../../../utils/constants";
+import {categoryMap, CDN_URL} from "../../../utils/constants";
 import {Card} from './card';
 import {ICardDara} from './card'
 
 interface ICardWithImageData extends ICardData {
     image: string;
+    category: string;
     alt: string | null
 }
 
@@ -22,5 +23,12 @@ export abstract class CardWithImage<T> extends Card<T> {
 
     public set alt(alt: string) {
         this.imageElement.alt = alt;
+    }
+
+    public set category(category: string) {
+        if (categoryMap[category]) {
+            this.categoryElement.classList.add(categoryMap[category]);
+            this.categoryElement.textContent = category;
+        }
     }
 }

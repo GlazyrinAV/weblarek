@@ -5,12 +5,7 @@ import {ICardAction} from "../../../../types";
 import {CardWithImage} from "../cardWithImage.ts";
 import {ICardWithImageData} from '../cardWithImage.ts'
 
-interface ICardCatalogData extends ICardWithImageData {
-    category: string;
-    price: number | null;
-}
-
-export class CardCatalog extends CardWithImage<ICardCatalogData> {
+export class CardCatalog extends CardWithImage<ICardWithImageData> {
     private categoryElement: HTMLElement;
     private imageElement: HTMLImageElement;
     private cardButton: HTMLButtonElement;
@@ -25,18 +20,5 @@ export class CardCatalog extends CardWithImage<ICardCatalogData> {
         if (actions?.onClick) {
             this.cardButton.addEventListener('click', actions.onClick);
         }
-    }
-
-    public set category(category: string) {
-        this.categoryElement.textContent = category;
-        for (const [key, value] of Object.entries(categoryMap)) {
-            if (key === category) {
-                this.categoryElement.classList.add(value)
-            }
-        }
-    }
-
-    public set image(src: string) {
-        this.setImage(this.imageElement, `${CDN_URL}${src}`);
     }
 }

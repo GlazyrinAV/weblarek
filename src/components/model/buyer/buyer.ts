@@ -16,19 +16,19 @@ export class Buyer {
     set(buyer: Partial<IBuyer>): void {
         if (buyer.address != null) {
             this.buyer.address = buyer.address;
-            this.events.emit('buyer:changeOrder');
+            this.events.emit('buyer:change');
         }
         if (buyer.email != null) {
             this.buyer.email = buyer.email;
-            this.events.emit('buyer:changeContacts');
+            this.events.emit('buyer:change');
         }
         if (buyer.payment) {
             this.buyer.payment = buyer.payment;
-            this.events.emit('buyer:changeOrder');
+            this.events.emit('buyer:change');
         }
         if (buyer.phone != null) {
             this.buyer.phone = buyer.phone;
-            this.events.emit('buyer:changeContacts');
+            this.events.emit('buyer:change');
         }
     }
 
