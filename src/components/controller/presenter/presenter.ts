@@ -48,10 +48,18 @@ export class Presenter {
 
     private eventEmitter: IEvents;
 
+    private cardCatalog: CardConstructable;
+
+    private cardBasket: CardConstructable;
+
+    private cardPreview: CardConstructable;
+
+
     constructor(api: IApiController, products: IProductModel, cart: ICartModel, buyer: IBuyerModel,
                 gallery: IGalleryView, header: IHeaderView, modal: IModalView, order: IOrderView,
                 contact: IOrderView & IContactsView, result: IOrderResultView, basket: IBasketView,
-                eventEmitter: IEvents) {
+                eventEmitter: IEvents, cardCatalog: CardConstructable, cardBasket: CardConstructable,
+                cardPreview: CardConstructable) {
         this.api = api;
         this.products = products;
         this.cart = cart;
@@ -64,14 +72,17 @@ export class Presenter {
         this.result = result;
         this.basket = basket;
         this.eventEmitter = eventEmitter;
+        this.cardCatalog = cardCatalog;
+        this.cardBasket = cardBasket;
+        this.cardPreview = cardPreview;
     }
 
-    public onNewCatalog(constructor: CardConstructable): void {
+    public onNewCatalog(): void {
         const catalog: HTMLElement[] = [];
 
         this.products.getAll().forEach(element => {
             const productContainer = cloneTemplate('#card-catalog');
-            const productElement: ICardWithImageView = this.createNewCard(constructor, productContainer, {
+            const productElement: ICardWithImageView = this.createNewCard(this.cardCatalog, productContainer, {
                 onClick: () => this.eventEmitter.emit(EventsType.CardOpen, element),
             });
             catalog.push(productElement.render(element));
@@ -84,12 +95,12 @@ export class Presenter {
         this.products.setCurrentProduct(data);
     }
 
-    public onChooseCurrent(constructor: CardConstructable): void {
+    public onChooseCurrent(): void {
         const product = this.products.getCurrentProduct();
         const productContainer = cloneTemplate('#card-preview');
 
         if (product) {
-            const productElement: ICardPreviewView = this.createNewCard(constructor, productContainer, {
+            const productElement: ICardPreviewView = this.createNewCard(this.cardPreview, productContainer, {
                 onClick: () => {
                     this.eventEmitter.emit(EventsType.CardButtonAction, product)
                 }
@@ -122,19 +133,19 @@ export class Presenter {
         }
     }
 
-    public onOpenBasket(constructor: CardConstructable) {
+    public onOpenBasket() {
         this.basket.clear();
-        this.renderBasket(constructor);
+        this.renderBasket();
     }
 
     public onRemoveProduct(data: IProduct) {
         this.cart.remove(data.id);
     }
 
-    public onCartChange(constructor: CardConstructable) {
+    public onCartChange() {
         if (document.body.querySelector('.modal__content > .basket')) {
             this.basket.clear();
-            this.renderBasket(constructor);
+            this.renderBasket();
         } else {
             this.modal.closeModal();
         }
@@ -211,13 +222,13 @@ export class Presenter {
     }
 
     // отрисовка модального окна с корзиной товаров при изменении её состава
-    private renderBasket(constructor: CardConstructable): void {
+    private renderBasket(): void {
         const basketCatalog: HTMLElement[] = [];
         const cartProducts = this.cart.getAll();
 
         for (let i = 0; i < cartProducts.length; i++) {
             const productContainer = cloneTemplate('#card-basket');
-            const productElement: ICardBasketView = this.createNewCard(constructor, productContainer, {
+            const productElement: ICardBasketView = this.createNewCard(this.cardBasket, productContainer, {
                 onClick: () => this.eventEmitter.emit(EventsType.CardRemoveButton, cartProducts[i]),
             });
             productElement.index = i + 1;

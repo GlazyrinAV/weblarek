@@ -42,12 +42,12 @@ const result = new OrderResult(eventEmitter, cloneTemplate('#success'));
 const basket = new Basket(eventEmitter, cloneTemplate("#basket"));
 
 // Presenter
-const presenter = new Presenter(api, products, cart, buyer,
-    gallery, header, modal, order, contact, result, basket, eventEmitter);
+const presenter = new Presenter(api, products, cart, buyer, gallery, header, modal, order, contact,
+    result, basket, eventEmitter, CardCatalog, CardBasket, CardPreview);
 
 // product:receivedCatalog // onNewCatalog
 eventEmitter.on(EventsType.ProductNewCatalog, () => {
-    presenter.onNewCatalog(CardCatalog);
+    presenter.onNewCatalog();
 });
 
 // card:open // onOpenCard
@@ -57,7 +57,7 @@ eventEmitter.on(EventsType.CardOpen, (data: IProduct) => {
 
 // product:chosenCurrent // onChooseCurrent
 eventEmitter.on(EventsType.ProductChooseCurrent, () => {
-    presenter.onChooseCurrent(CardPreview);
+    presenter.onChooseCurrent();
 })
 
 // modal:closeButton // onModalClose
@@ -72,7 +72,7 @@ eventEmitter.on(EventsType.CardButtonAction, (data: IProduct) => {
 
 // header:basket // onOpenBasket
 eventEmitter.on(EventsType.OpenBasket, () => {
-    presenter.onOpenBasket(CardBasket);
+    presenter.onOpenBasket();
 });
 
 // card:removeButton // onRemoveProduct
@@ -82,7 +82,7 @@ eventEmitter.on(EventsType.CardRemoveButton, (data: IProduct) => {
 
 // cart:change // onCartChange
 eventEmitter.on(EventsType.CartChange, () => {
-    presenter.onCartChange(CardBasket);
+    presenter.onCartChange();
 });
 
 // order:new // onNewOrder
