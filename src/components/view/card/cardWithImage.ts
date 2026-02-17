@@ -3,17 +3,14 @@ import {categoryMap, CDN_URL} from "../../../utils/constants";
 import {Card} from './card';
 import {ICardWithImageView} from "../../../types";
 
-interface ICardWithImageData extends ICardData {
-    image: string;
-    category: string;
-    alt: string | null
-}
-
 export abstract class CardWithImage<T> extends Card<T> implements ICardWithImageView {
     private imageElement: HTMLImageElement;
+    private categoryElement: HTMLElement;
 
     protected constructor(container: HTMLElement) {
         super(container);
+
+        this.categoryElement = ensureElement<HTMLElement>('.card__category', this.container);
         this.imageElement = ensureElement<HTMLImageElement>('.card__image', this.container);
     }
 
@@ -26,9 +23,11 @@ export abstract class CardWithImage<T> extends Card<T> implements ICardWithImage
     }
 
     public set category(category: string) {
-        if (categoryMap[category]) {
-            this.categoryElement.classList.add(categoryMap[category]);
-            this.categoryElement.textContent = category;
-        }
+        Object.entries(categoryMap).forEach(([key, value]) => {
+            if (key === category) {
+                this.categoryElement.classList.add(value);
+                this.categoryElement.textContent = category;
+            }
+        });
     }
 }

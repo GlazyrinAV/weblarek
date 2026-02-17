@@ -1,22 +1,14 @@
 import {ensureElement} from "../../../../utils/utils.ts";
-import {CardConstructable, ICardAction, ICardPreviewView} from "../../../../types";
-import {CardWithImage, ICardWithImageData} from "../cardWithImage.ts";
+import {ICardAction, ICardPreviewData, ICardPreviewView} from "../../../../types";
+import {CardWithImage} from "../cardWithImage"
 
-interface ICardPreviewData extends ICardWithImageData {
-    description: string;
-}
-
-export class CardPreview extends CardWithImage<ICardPreviewData> implements CardConstructable, ICardPreviewView {
-    private categoryElement: HTMLElement;
-    private imageElement: HTMLImageElement;
+export class CardPreview extends CardWithImage<ICardPreviewData> implements ICardPreviewView {
     private descriptionElement: HTMLElement;
     private cardButton: HTMLButtonElement;
 
     constructor(container: HTMLElement, actions?: ICardAction) {
         super(container);
 
-        this.categoryElement = ensureElement<HTMLElement>('.card__category', this.container);
-        this.imageElement = ensureElement<HTMLImageElement>('.card__image', this.container);
         this.descriptionElement = ensureElement<HTMLElement>('.card__text', this.container);
         this.cardButton = ensureElement<HTMLButtonElement>('.card__button', this.container);
 

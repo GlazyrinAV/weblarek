@@ -1,7 +1,11 @@
 import {Component} from "../../base/Component.ts";
 import {ensureElement} from "../../../utils/utils.ts";
-import {IOrderForm, IValidationResult} from "../../../types";
+import {IValidationResult} from "../../../types";
 import {IEvents} from "../../base/Events.ts";
+
+export interface IOrderForm {
+    errors: Partial<IValidationResult>;
+}
 
 export abstract class OrderForm<T> extends Component<T> implements IOrderForm {
     protected errorsElement: HTMLElement;

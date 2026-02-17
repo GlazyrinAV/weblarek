@@ -1,12 +1,9 @@
 import {Card} from "../card.ts";
 import {ensureElement} from "../../../../utils/utils.ts";
-import {CardConstructable, ICardAction, ICardBasketView} from "../../../../types";
+import {ICardAction, ICardBasketView, ICardBasketData} from "../../../../types";
 
-interface ICardBasketData extends ICardData {
-    index: number;
-}
 
-export class CardBasket extends Card<ICardBasketData> implements CardConstructable, ICardBasketView {
+export class CardBasket extends Card<ICardBasketData> implements ICardBasketView {
     private indexElement: HTMLElement;
     private deleteButton: HTMLButtonElement;
 
