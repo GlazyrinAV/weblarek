@@ -4,7 +4,7 @@ import {EventsType} from "../../base/EventsType";
 
 export class Cart implements ICartModel {
 
-    private cart: Set<IProduct> = new Set<IProduct>();
+    private readonly cart: Set<IProduct> = new Set<IProduct>();
 
     constructor(protected events: IEvents) {
     }

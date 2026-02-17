@@ -4,7 +4,7 @@ import {EventsType} from "../../base/EventsType";
 
 export class Products implements IProductModel {
 
-    private products: IProduct[] = [];
+    private readonly products: IProduct[] = [];
 
     private currentProduct: IProduct | null = null;
 

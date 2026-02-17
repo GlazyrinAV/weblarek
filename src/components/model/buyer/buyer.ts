@@ -7,7 +7,7 @@ export class Buyer implements IBuyerModel {
     private buyer: IBuyer = {
         address: "",
         email: "",
-        payment: null,
+        payment: 'UNSELECTED',
         phone: ""
     }
 
@@ -41,7 +41,7 @@ export class Buyer implements IBuyerModel {
         this.buyer = {
             address: "",
             email: "",
-            payment: null,
+            payment: 'UNSELECTED',
             phone: ""
         };
         this.events.emit(EventsType.BuyerEmpty);
@@ -59,7 +59,7 @@ export class Buyer implements IBuyerModel {
         if (!this.buyer.address || this.buyer.address.trim().length == 0) {
             errors['address'] = "Укажите адрес доставки";
         }
-        if (!this.buyer.payment || this.buyer.payment.trim().length == 0) {
+        if (this.buyer.payment === 'UNSELECTED' || this.buyer.payment.trim().length == 0) {
             errors['payment'] = "Укажите способ платежа";
         }
 
