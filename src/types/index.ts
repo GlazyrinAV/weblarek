@@ -31,7 +31,7 @@ export interface IProductList {
 
 export interface IOrder extends IBuyer {
     total: number,
-    items: String[];
+    items: string[];
 }
 
 export interface IOrderResult {
@@ -90,33 +90,33 @@ export interface IBuyerModel {
 }
 
 export interface IBasketView extends IComponentView {
-    set content(items: HTMLElement[]): void;
+    set content(items: HTMLElement[]);
 
-    set total(total: number): void;
+    set total(total: number);
 
     clear(): void;
 }
 
 export interface ICardView extends IComponentView {
-    set title(title: string): void;
+    set title(title: string);
 
-    set price(price: number | null): void;
+    set price(price: number | null);
 }
 
 export interface ICardWithImageView extends IComponentView {
-    set image(src: string): void;
+    set image(src: string);
 
-    set alt(alt: string): void;
+    set alt(alt: string);
 
-    set category(category: string): void;
+    set category(category: string);
 }
 
 export interface ICardBasketView extends IComponentView {
-    set index(index: number): void;
+    set index(index: number);
 }
 
 export interface ICardPreviewView extends IComponentView {
-    set description(text: string): void;
+    set description(text: string);
 
     changeButtonToRemove(): void;
 
@@ -124,15 +124,15 @@ export interface ICardPreviewView extends IComponentView {
 }
 
 export interface IGalleryView extends IComponentView {
-    set catalog(items: HTMLElement[]): void;
+    set catalog(items: HTMLElement[]);
 }
 
 export interface IHeaderView extends IComponentView {
-    set counter(value: number): void;
+    set counter(value: number);
 }
 
 export interface IModalView extends IComponentView {
-    set content(content: HTMLElement): void;
+    set content(content: HTMLElement);
 
     closeModal(): void;
 
@@ -140,7 +140,7 @@ export interface IModalView extends IComponentView {
 }
 
 export interface IOrderFormView extends IComponentView {
-    set errors(errors: Partial<IValidationResult>): void;
+    set errors(errors: Partial<IValidationResult>);
 
     activeButton(): void;
 
@@ -148,19 +148,19 @@ export interface IOrderFormView extends IComponentView {
 }
 
 export interface IOrderView extends IComponentView {
-    set address(address: string): void;
+    set address(address: string);
 
-    set payment(payment: TPayment): void;
+    set payment(payment: TPayment);
 }
 
 export interface IContactsView extends IComponentView {
-    set email(email: string): void;
+    set email(email: string);
 
-    set phone(phone: string): void;
+    set phone(phone: string);
 }
 
 export interface IOrderResultView extends IComponentView {
-    set total(total: number): void;
+    set total(total: number);
 }
 
 export interface IApiController {
