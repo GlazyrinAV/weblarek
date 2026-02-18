@@ -9,6 +9,9 @@ on:
   # Позволяет вам запускать этот рабочий процесс вручную из вкладки Actions
   workflow_dispatch:
 
+env:
+  ${{VITE_API_ORIGIN}}
+
 # Устанавливает разрешения для GITHUB_TOKEN, чтобы разрешить развёртывание на GitHub Pages
 permissions:
   contents: read
