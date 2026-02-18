@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Create EnvFile
-        run: touch .env && echo "VITE_API_ORIGIN=https://larek-api.nomoreparties.co" > .env
+        run: touch ./dist/.env && echo "VITE_API_ORIGIN=https://larek-api.nomoreparties.co" > ./dist/.env
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
