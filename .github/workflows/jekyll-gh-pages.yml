@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  ${{VITE_API_ORIGIN}}
+  VITE_API_ORIGIN: 'https://larek-api.nomoreparties.co'
 
 # Устанавливает разрешения для GITHUB_TOKEN, чтобы разрешить развёртывание на GitHub Pages
 permissions:
