@@ -188,6 +188,14 @@ export interface ICardBasketData extends ICardData {
     index: number;
 }
 
-export interface CardConstructable {
-    new(container: HTMLElement, actions?: ICardAction);
+export interface CardCatalogConstructable {
+    new(container: HTMLElement, actions?: ICardAction): ICardWithImageData & IComponentView;
+}
+
+export interface CardPreviewConstructable {
+    new(container: HTMLElement, actions?: ICardAction): ICardPreviewView & IComponentView;
+}
+
+export interface CardBasketConstructable {
+    new(container: HTMLElement, actions?: ICardAction): ICardBasketView & IComponentView;
 }

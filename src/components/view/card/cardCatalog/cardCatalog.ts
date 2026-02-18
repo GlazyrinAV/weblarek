@@ -1,4 +1,4 @@
-import {ICardAction, ICardWithImageView, ICardWithImageData} from "../../../../types";
+import {ICardAction, ICardWithImageData, ICardWithImageView} from "../../../../types";
 import {CardWithImage} from "../cardWithImage.ts";
 
 export class CardCatalog extends CardWithImage<ICardWithImageData> implements ICardWithImageView {

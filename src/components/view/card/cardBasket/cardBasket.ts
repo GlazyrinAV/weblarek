@@ -1,6 +1,6 @@
 import {Card} from "../card.ts";
 import {ensureElement} from "../../../../utils/utils.ts";
-import {ICardAction, ICardBasketView, ICardBasketData} from "../../../../types";
+import {ICardAction, ICardBasketData, ICardBasketView} from "../../../../types";
 
 
 export class CardBasket extends Card<ICardBasketData> implements ICardBasketView {

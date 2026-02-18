@@ -1,5 +1,7 @@
 import {
-    CardConstructable,
+    CardBasketConstructable,
+    CardCatalogConstructable,
+    CardPreviewConstructable,
     IApiController,
     IBasketView,
     IBuyerModel,
@@ -50,18 +52,19 @@ export class Presenter {
 
     private eventEmitter: IEvents;
 
-    private cardCatalog: CardConstructable;
+    private cardCatalog: CardCatalogConstructable;
 
-    private cardBasket: CardConstructable;
+    private cardBasket: CardBasketConstructable;
 
-    private cardPreview: CardConstructable;
+    private cardPreview: CardPreviewConstructable;
 
 
     constructor(api: IApiController, products: IProductModel, cart: ICartModel, buyer: IBuyerModel,
                 gallery: IGalleryView & IComponentView, header: IHeaderView & IComponentView,
                 modal: IModalView & IComponentView, order: IOrderView & IComponentView,
                 contact: IContactsView & IComponentView, result: IOrderResultView & IComponentView,
-                basket: IBasketView & IComponentView, eventEmitter: IEvents, cardCatalog: CardConstructable, cardBasket: CardConstructable, cardPreview: CardConstructable) {
+                basket: IBasketView & IComponentView, eventEmitter: IEvents, cardCatalog: CardCatalogConstructable,
+                cardBasket: CardBasketConstructable, cardPreview: CardPreviewConstructable) {
         this.api = api;
         this.products = products;
         this.cart = cart;
@@ -84,9 +87,10 @@ export class Presenter {
 
         this.products.getAll().forEach(element => {
             const productContainer = cloneTemplate('#card-catalog');
-            const productElement: ICardWithImageData & IComponentView = this.createNewCard(this.cardCatalog, productContainer, {
-                onClick: () => this.eventEmitter.emit(EventsType.CardOpen, element),
-            });
+            const productElement: ICardWithImageData & IComponentView =
+                this.createNewCardCatalog(this.cardCatalog, productContainer, {
+                    onClick: () => this.eventEmitter.emit(EventsType.CardOpen, element),
+                });
             catalog.push(productElement.render(element));
         });
 
@@ -102,11 +106,12 @@ export class Presenter {
         const productContainer = cloneTemplate('#card-preview');
 
         if (product) {
-            const productElement: ICardPreviewView & IComponentView = this.createNewCard(this.cardPreview, productContainer, {
-                onClick: () => {
-                    this.eventEmitter.emit(EventsType.CardButtonAction, product)
-                }
-            });
+            const productElement: ICardPreviewView & IComponentView =
+                this.createNewCardPreview(this.cardPreview, productContainer, {
+                    onClick: () => {
+                        this.eventEmitter.emit(EventsType.CardButtonAction, product)
+                    }
+                });
 
             if (!product.price) {
                 productElement.disablePurchaseButton();
@@ -230,9 +235,10 @@ export class Presenter {
 
         for (let i = 0; i < cartProducts.length; i++) {
             const productContainer = cloneTemplate('#card-basket');
-            const productElement: ICardBasketView & IComponentView = this.createNewCard(this.cardBasket, productContainer, {
-                onClick: () => this.eventEmitter.emit(EventsType.CardRemoveButton, cartProducts[i]),
-            });
+            const productElement: ICardBasketView & IComponentView =
+                this.createNewCardBasket(this.cardBasket, productContainer, {
+                    onClick: () => this.eventEmitter.emit(EventsType.CardRemoveButton, cartProducts[i]),
+                });
             productElement.index = i + 1;
             basketCatalog.push(productElement.render(cartProducts[i]));
         }
@@ -265,7 +271,8 @@ export class Presenter {
         this.renderForm(order);
     }
 
-    private renderForm(order: (IOrderView & IComponentView & IOrderFormView) | (IContactsView & IComponentView & IOrderFormView)) {
+    private renderForm(order: (IOrderView & IComponentView & IOrderFormView) |
+        (IContactsView & IComponentView & IOrderFormView)) {
         this.modal.clear();
         this.modal.render({
             content: order.render({
@@ -274,7 +281,15 @@ export class Presenter {
         });
     }
 
-    private createNewCard(constructor: CardConstructable, container: HTMLElement, actions?: ICardAction) {
+    private createNewCardCatalog(constructor: CardCatalogConstructable, container: HTMLElement, actions?: ICardAction) {
+        return new constructor(container, actions);
+    }
+
+    private createNewCardPreview(constructor: CardPreviewConstructable, container: HTMLElement, actions?: ICardAction) {
+        return new constructor(container, actions);
+    }
+
+    private createNewCardBasket(constructor: CardBasketConstructable, container: HTMLElement, actions?: ICardAction) {
         return new constructor(container, actions);
     }
 }
