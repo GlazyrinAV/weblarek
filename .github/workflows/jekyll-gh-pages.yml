@@ -1,16 +1,10 @@
 # Простой рабочий процесс для развёртывания статического контента на GitHub Pages
-name: Deploy static content to Pages
+name: Deploy
 
 on:
   # Запускается при пушах в целевую ветку по умолчанию
   push:
     branches: ['main']
-
-  # Позволяет вам запускать этот рабочий процесс вручную из вкладки Actions
-  workflow_dispatch:
-
-env:
-  VITE_API_ORIGIN: 'https://larek-api.nomoreparties.co'
 
 # Устанавливает разрешения для GITHUB_TOKEN, чтобы разрешить развёртывание на GitHub Pages
 permissions:
@@ -40,6 +34,8 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
+      - name: Create EnvFile
+        run: touch .env && echo "VITE_API_ORIGIN=${VITE_API_ORIGIN}" > .env
       - name: Build
         run: npm run build
       - name: Setup Pages
