@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Create EnvFile
-        run: touch .env && echo "VITE_API_ORIGIN=https://larek-api.nomoreparties.co" > .env
+        run: touch .env && echo "VITE_API_ORIGIN=${{ vars.VITE_API_ORIGIN }}" > .env
       - name: Build
         run: npm run build
       - name: Setup Pages
