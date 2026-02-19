@@ -8,7 +8,7 @@ import {
     ICardAction,
     ICardBasketView,
     ICardPreviewView,
-    ICardWithImageData,
+    ICardWithImageView,
     ICartModel,
     IComponentView,
     IContactsView,
@@ -16,7 +16,6 @@ import {
     IHeaderView,
     IInputData,
     IModalView,
-    IOrderFormView,
     IOrderResultView,
     IOrderView,
     IProduct,
@@ -36,19 +35,19 @@ export class Presenter {
 
     private buyer: IBuyerModel;
 
-    private gallery: IGalleryView & IComponentView;
+    private gallery: IGalleryView;
 
-    private header: IHeaderView & IComponentView;
+    private header: IHeaderView;
 
-    private modal: IModalView & IComponentView;
+    private modal: IModalView;
 
-    private order: IOrderView & IComponentView;
+    private order: IOrderView;
 
-    private contact: IContactsView & IComponentView;
+    private contact: IContactsView;
 
-    private result: IOrderResultView & IComponentView;
+    private result: IOrderResultView;
 
-    private basket: IBasketView & IComponentView;
+    private basket: IBasketView;
 
     private eventEmitter: IEvents;
 
@@ -58,13 +57,11 @@ export class Presenter {
 
     private cardPreview: CardPreviewConstructable;
 
-
     constructor(api: IApiController, products: IProductModel, cart: ICartModel, buyer: IBuyerModel,
-                gallery: IGalleryView & IComponentView, header: IHeaderView & IComponentView,
-                modal: IModalView & IComponentView, order: IOrderView & IComponentView,
-                contact: IContactsView & IComponentView, result: IOrderResultView & IComponentView,
-                basket: IBasketView & IComponentView, eventEmitter: IEvents, cardCatalog: CardCatalogConstructable,
-                cardBasket: CardBasketConstructable, cardPreview: CardPreviewConstructable) {
+                gallery: IGalleryView, header: IHeaderView, modal: IModalView, order: IOrderView,
+                contact: IContactsView, result: IOrderResultView, basket: IBasketView, eventEmitter: IEvents,
+                cardCatalog: CardCatalogConstructable, cardBasket: CardBasketConstructable,
+                cardPreview: CardPreviewConstructable) {
         this.api = api;
         this.products = products;
         this.cart = cart;
@@ -87,7 +84,7 @@ export class Presenter {
 
         this.products.getAll().forEach(element => {
             const productContainer = cloneTemplate('#card-catalog');
-            const productElement: ICardWithImageData & IComponentView =
+            const productElement: ICardWithImageView =
                 this.createNewCardCatalog(this.cardCatalog, productContainer, {
                     onClick: () => this.eventEmitter.emit(EventsType.CardOpen, element),
                 });
@@ -106,7 +103,7 @@ export class Presenter {
         const productContainer = cloneTemplate('#card-preview');
 
         if (product) {
-            const productElement: ICardPreviewView & IComponentView =
+            const productElement: ICardPreviewView =
                 this.createNewCardPreview(this.cardPreview, productContainer, {
                     onClick: () => {
                         this.eventEmitter.emit(EventsType.CardButtonAction, product)
@@ -235,7 +232,7 @@ export class Presenter {
 
         for (let i = 0; i < cartProducts.length; i++) {
             const productContainer = cloneTemplate('#card-basket');
-            const productElement: ICardBasketView & IComponentView =
+            const productElement: ICardBasketView =
                 this.createNewCardBasket(this.cardBasket, productContainer, {
                     onClick: () => this.eventEmitter.emit(EventsType.CardRemoveButton, cartProducts[i]),
                 });
@@ -262,7 +259,7 @@ export class Presenter {
     }
 
     // отрисовка контактов
-    private renderContacts(order: IContactsView & IComponentView): void {
+    private renderContacts(order: IContactsView): void {
         order.errors = {
             phone: this.buyer.validate()['phone'],
             email: this.buyer.validate()['email'],
@@ -271,8 +268,7 @@ export class Presenter {
         this.renderForm(order);
     }
 
-    private renderForm(order: (IOrderView & IComponentView & IOrderFormView) |
-        (IContactsView & IComponentView & IOrderFormView)) {
+    private renderForm(order: (IOrderView) | (IContactsView)) {
         this.modal.clear();
         this.modal.render({
             content: order.render({

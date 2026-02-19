@@ -89,7 +89,7 @@ export interface IBuyerModel {
     validate(): IValidationResult;
 }
 
-export interface IBasketView {
+export interface IBasketView extends IComponentView {
     set content(items: HTMLElement[]);
 
     set total(total: number);
@@ -103,7 +103,7 @@ export interface ICardView {
     set price(price: number | null);
 }
 
-export interface ICardWithImageView {
+export interface ICardWithImageView extends IComponentView {
     set image(src: string);
 
     set alt(alt: string);
@@ -111,11 +111,11 @@ export interface ICardWithImageView {
     set category(category: string);
 }
 
-export interface ICardBasketView {
+export interface ICardBasketView extends IComponentView {
     set index(index: number);
 }
 
-export interface ICardPreviewView {
+export interface ICardPreviewView extends IComponentView {
     set description(text: string);
 
     changeButtonToRemove(): void;
@@ -123,15 +123,15 @@ export interface ICardPreviewView {
     disablePurchaseButton(): void;
 }
 
-export interface IGalleryView {
+export interface IGalleryView extends IComponentView {
     set catalog(items: HTMLElement[]);
 }
 
-export interface IHeaderView {
+export interface IHeaderView extends IComponentView {
     set counter(value: number);
 }
 
-export interface IModalView {
+export interface IModalView extends IComponentView {
     set content(content: HTMLElement);
 
     closeModal(): void;
@@ -143,19 +143,19 @@ export interface IOrderFormView {
     set errors(errors: Partial<IValidationResult>);
 }
 
-export interface IOrderView extends IOrderFormView {
+export interface IOrderView extends IOrderFormView, IComponentView {
     set address(address: string);
 
     set payment(payment: TPayment);
 }
 
-export interface IContactsView extends IOrderFormView {
+export interface IContactsView extends IOrderFormView, IComponentView {
     set email(email: string);
 
     set phone(phone: string);
 }
 
-export interface IOrderResultView {
+export interface IOrderResultView extends IComponentView {
     set total(total: number);
 }
 
@@ -189,13 +189,13 @@ export interface ICardBasketData extends ICardData {
 }
 
 export interface CardCatalogConstructable {
-    new(container: HTMLElement, actions?: ICardAction): ICardWithImageData & IComponentView;
+    new(container: HTMLElement, actions?: ICardAction): ICardWithImageView;
 }
 
 export interface CardPreviewConstructable {
-    new(container: HTMLElement, actions?: ICardAction): ICardPreviewView & IComponentView;
+    new(container: HTMLElement, actions?: ICardAction): ICardPreviewView;
 }
 
 export interface CardBasketConstructable {
-    new(container: HTMLElement, actions?: ICardAction): ICardBasketView & IComponentView;
+    new(container: HTMLElement, actions?: ICardAction): ICardBasketView;
 }
